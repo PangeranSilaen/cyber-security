@@ -13,3 +13,8 @@
 | winget | Yes | `C:\Users\hi\AppData\Local\Microsoft\WindowsApps\winget.exe` | Windows package manager. |
 | Git | Yes | `C:\Program Files\Git\cmd\git.exe` | Optional Git Bash utilities. |
 | pipx | No | - | Not required. |
+| testssl.sh | Yes (Docker) | `drwetter/testssl.sh:latest` | TLS vulnerability assessment non-destruktif. |
+| Nikto | Yes (Docker) | `ghcr.io/sullo/nikto` v2.5.0 | Scan tidak selesai (~10%) karena WAF memblok pola request. |
+| wafw00f | Yes (Docker) | `secsi/wafw00f` v2.4.2 | `ghcr.io/enaqx/wafw00f` denied; gunakan `secsi/wafw00f`. |
+| certspotter API | Yes | `api.certspotter.com` | Subdomain enum via CT log; free tier membatasi hasil. |
+| crt.sh | No (down) | - | `502 Bad Gateway` berulang saat pengujian; gunakan certspotter sebagai alternatif. |

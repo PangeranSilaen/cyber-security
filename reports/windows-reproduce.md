@@ -92,3 +92,80 @@ curl.exe -L -I "https://perpustakaan.itk.ac.id/index.php?rest_route=/"
 
 - Jangan menyimpan API key di file project, laporan, screenshot, atau command log.
 - Shodan dipakai sebagai passive third-party intelligence, bukan scanning aktif dari mesin lokal.
+
+## 7. Recon Lanjutan (Minggu 4)
+
+### 7.1 Subdomain Enumeration Pasif (Certificate Transparency)
+
+```powershell
+# crt.sh (sering 502; coba dulu)
+Invoke-RestMethod -Uri "https://crt.sh/?q=%25.itk.ac.id&output=json" |
+  ForEach-Object { $_.name_value -split "`n" } | Sort-Object -Unique
+
+# Alternatif: certspotter (dipakai saat crt.sh down)
+$r = Invoke-RestMethod -Uri "https://api.certspotter.com/v1/issuances?domain=itk.ac.id&include_subdomains=true&expand=dns_names"
+$r.dns_names | Sort-Object -Unique
+
+# Resolusi tiap subdomain
+"perpustakaan","e-library","api-ipr","ipr","isl","mmt","thingsboard","inspace" | ForEach-Object {
+  Resolve-DnsName "$_.itk.ac.id" -Type A -ErrorAction SilentlyContinue
+}
+```
+
+Catatan scope: hanya `perpustakaan.itk.ac.id` yang menjadi target aktif. Subdomain lain hanya konteks OSINT pasif, tidak di-scan aktif.
+
+### 7.2 Tech Fingerprint (WordPress / Theme / Plugin)
+
+```powershell
+curl.exe -s -L https://perpustakaan.itk.ac.id/ |
+  Select-String -Pattern 'generator|wp-content|ver=|themes/|plugins/'
+```
+
+Hasil: `WordPress 5.9.13`, theme `Divi`, plugin `wp-pagenavi 2.70` dan `chaty`.
+
+### 7.3 WordPress Exposure + HTTP Methods (non-destruktif)
+
+```powershell
+curl.exe -s -i -X OPTIONS https://perpustakaan.itk.ac.id/
+curl.exe -s -i https://perpustakaan.itk.ac.id/xmlrpc.php
+curl.exe -s -o NUL -w "%{http_code}`n" https://perpustakaan.itk.ac.id/readme.html
+curl.exe -s -o NUL -w "%{http_code}`n" https://perpustakaan.itk.ac.id/wp-login.php
+curl.exe -s -i https://perpustakaan.itk.ac.id/wp-json/wp/v2/users
+curl.exe -s -i "https://perpustakaan.itk.ac.id/?author=1"
+```
+
+Hasil: `xmlrpc.php` = `405 Allow: POST` (aktif); `readme.html` & `wp-login.php` = `200`; user enumeration (`wp-json/wp/v2/users`, `?author=1`) = `404` (diblok).
+
+### 7.4 Nmap NSE Safe Scripts
+
+```powershell
+& "C:\Program Files (x86)\Nmap\nmap.exe" -Pn -T2 -p 443 `
+  --script "ssl-enum-ciphers,ssl-cert,http-methods,http-headers,http-title,http-server-header" `
+  perpustakaan.itk.ac.id
+```
+
+Hasil: HTTP methods `GET HEAD POST OPTIONS`; semua cipher grade `A`; cert RSA 2048 SHA256.
+
+### 7.5 TLS Vulnerability Assessment (testssl.sh via Docker)
+
+```powershell
+docker run --rm drwetter/testssl.sh --color 0 -U https://perpustakaan.itk.ac.id/
+```
+
+Hasil: not vulnerable untuk Heartbleed/ROBOT/POODLE/CRIME/FREAK/DROWN/SWEET32/BEAST/RC4. BREACH precondition (gzip) terdeteksi (kondisional). LUCKY13 potentially vulnerable (CBC ciphers, experimental).
+
+### 7.6 WAF Detection (wafw00f via Docker)
+
+```powershell
+docker run --rm secsi/wafw00f https://perpustakaan.itk.ac.id/
+```
+
+Hasil: terindikasi di belakang WAF/security layer (response `200` -> `403` saat pola serangan dikirim).
+
+### 7.7 Nikto Full Attempt
+
+```powershell
+docker run --rm ghcr.io/sullo/nikto -h https://perpustakaan.itk.ac.id/ -ssl -maxtime 240s -timeout 10 -Tuning 123bde -nointeractive
+```
+
+Catatan: Nikto tetap berhenti ~10% karena WAF memblok pola request (bukan masalah tuning). Tidak dipaksakan lebih jauh agar tidak masuk area agresif/bypass WAF.
