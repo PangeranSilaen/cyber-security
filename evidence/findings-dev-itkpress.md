@@ -323,6 +323,57 @@ HTTP 200 di sini menyesatkan; karena diproses sebagai PHP, isi konfigurasi tidak
 
 ---
 
+## Pengujian Fokus Tubes: Injection Attack (Hasil: Tidak Terdeteksi / Input Ter-sanitasi)
+
+**ID:** DITK-008 (pengujian fokus, hasil negatif - kontrol positif)
+
+**Judul:** Deteksi Injection Non-Destruktif pada Parameter Pencarian Publik
+
+**Severity:** Informational (tidak ditemukan kerentanan)
+
+**Metodologi:** Black box, deteksi non-destruktif. Hanya membandingkan respons baseline vs marker. TANPA UNION, TANPA time-based (SLEEP), TANPA exfiltrasi/dump data.
+
+**Bukti Non-Destruktif (2026-06-15, ~01:10 WITA, di luar jam kerja):**
+
+- Baseline `GET /home/search/search?query=book` = HTTP 200, body 16775 bytes.
+- Marker `query=book'` (single quote) = HTTP 200, ~16786 bytes, **tidak ada error SQL**.
+- Marker `query=book"` (double quote) = HTTP 200, ~16786 bytes, **tidak ada error SQL**.
+- Marker `query=book')` = HTTP 200, ~16788 bytes, **tidak ada error SQL**.
+- Marker `query=book'--` = HTTP 200, 6263 bytes (lebih kecil = halaman "no results" normal, karena literal tidak cocok judul mana pun; BUKAN indikator injection).
+- Pola deteksi error DB (`SQL syntax`, `mysqli`, `PDOException`, `Warning:`, `Fatal error`, dll) = **tidak ada satu pun yang muncul**.
+
+**Analisis:**
+
+Endpoint pencarian memperlakukan input sebagai literal string (tampak parameterized/ter-sanitasi). Tidak ada error database yang bocor, tidak ada anomali status/struktur respons yang mengindikasikan SQL injection. Tidak diklaim sebagai kerentanan. Topik Injection dari instruksi tubes telah diuji secara non-destruktif dengan hasil negatif.
+
+**Catatan keterbatasan:** Pengujian dibatasi pada parameter GET publik (`query`). Parameter di balik autentikasi (form submission, dashboard editor OMP) tidak diuji karena memerlukan akun/login (di luar batas non-destruktif & izin).
+
+---
+
+## Pengujian Fokus Tubes: Unrestricted File Upload (Hasil: Gated di Balik Autentikasi)
+
+**ID:** DITK-009 (pengujian fokus, hasil negatif - kontrol positif)
+
+**Judul:** Mekanisme Upload OMP Tidak Terjangkau Tanpa Autentikasi
+
+**Severity:** Informational (tidak ditemukan unrestricted upload yang terjangkau)
+
+**Metodologi:** Black box, identifikasi kontrol dari halaman publik. TIDAK membuat akun, TIDAK login, TIDAK mengunggah file apa pun.
+
+**Bukti Non-Destruktif (2026-06-15, ~01:12 WITA, di luar jam kerja):**
+
+- `GET /home/submission/wizard` (jalur upload manuskrip OMP) = **HTTP 302** redirect ke `/home/login?source=%2Fhome%2Fsubmission%2Fwizard`.
+- `GET /home/about/submissions` = HTTP 200, halaman publik menjelaskan proses submission (informasi, bukan form upload aktif).
+- Mekanisme upload file (submission wizard OMP) berada **di balik login**; tidak ada endpoint upload yang dapat diakses anonim.
+
+**Analisis:**
+
+Open Monograph Press menempatkan seluruh alur unggah berkas (manuskrip, galley, supplementary files) di dalam workflow submission yang memerlukan autentikasi. Tanpa akun, tidak terdapat unrestricted file upload yang terjangkau publik. Karena registrasi terbuka (lihat DITK-006), permukaan upload secara teoritis dapat dicapai setelah membuat akun — namun pengujian aktif terhadapnya (membuat akun + mengunggah file uji) berada DI LUAR batas non-destruktif/izin tubes dan TIDAK dilakukan. Topik File Upload telah diidentifikasi dan didokumentasikan kontrolnya tanpa eksploitasi.
+
+**Catatan keterbatasan:** Validasi tipe/ekstensi/konten file yang sebenarnya hanya dapat diuji dari dalam sesi terautentikasi, yang tidak dilakukan demi kepatuhan etika.
+
+---
+
 ## Kontrol Keamanan Positif (Target Baru)
 
 | Kontrol | Bukti | Catatan |
@@ -345,5 +396,7 @@ HTTP 200 di sini menyesatkan; karena diproses sebagai PHP, isi konfigurasi tidak
 | DITK-005 | Shared host (OSINT) | Info | Reconnaissance | CWE-200 |
 | DITK-006 | Registrasi akun terbuka (pengganda risiko) | Low | A05 (+ konteks A06) | - |
 | DITK-007 | Directory listing `/cache/` | Low | A05 | CWE-548 |
+| DITK-008 | Injection (search) - diuji, tidak terdeteksi | Info (negatif) | A03 (diuji) | CWE-89 (tidak terbukti) |
+| DITK-009 | File upload - gated di balik login | Info (negatif) | A04/A05 (diuji) | CWE-434 (tidak terjangkau) |
 
-Catatan: seluruh severity bersifat sementara berdasarkan bukti non-destruktif.
+Catatan: seluruh severity bersifat sementara berdasarkan bukti non-destruktif. DITK-008 & DITK-009 adalah pengujian topik wajib tubes (Injection & File Upload) dengan hasil negatif/kontrol positif - diuji non-destruktif, tidak ditemukan kerentanan yang dapat diklaim.

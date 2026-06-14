@@ -45,6 +45,8 @@ Minggu 6 - Pivot ke target baru `dev-itkpress.itk.ac.id` (arahan dosen) + recon 
 - DITK-005: Shared host dengan layanan ITK lain + sibling produksi `itkpress.itk.ac.id` (Info).
 - DITK-006: Registrasi akun terbuka, pengganda risiko CVE yang butuh auth (Low).
 - DITK-007: Directory listing `/cache/` + file metadata versi (Low).
+- DITK-008: Injection (search) - DIUJI non-destruktif, tidak terdeteksi/input ter-sanitasi (Info/negatif). Fokus wajib tubes.
+- DITK-009: Unrestricted file upload - gated di balik login, tidak terjangkau anonim (Info/negatif). Fokus wajib tubes.
 - Validasi: `/config.inc.php` HTTP 200 tapi 2 byte (dieksekusi PHP) = false positive kebocoran kredensial.
 - Enumerasi endpoint: press path = `/home`; `/home/login`, `/home/user/register`, `/home/catalog`, `/home/search` semua 200.
 - Port scan -T2: 80/443 open, 97 filtered (identik perpustakaan, shared host).
@@ -59,13 +61,13 @@ Minggu 6 - Pivot ke target baru `dev-itkpress.itk.ac.id` (arahan dosen) + recon 
 ## Batasan Etika
 
 - Recon pasif + GET/HEAD tunggal saja; tidak ada port scan agresif, tidak ada Nikto, tidak ada brute force.
-- Tidak ada eksploitasi CVE, tidak ada payload, tidak ada percobaan XSS/SQLi/CSRF aktif.
+- Tidak ada eksploitasi CVE, tidak ada payload merusak. Injection diuji hanya dengan marker deteksi non-destruktif (`'`/`"`) tanpa UNION/time-based/dump; file upload hanya diidentifikasi kontrolnya tanpa membuat akun/login/upload.
 - Korelasi CVE hanya lookup database publik, tidak menyentuh server target.
-- Jika target down, pengujian dihentikan dan dilaporkan ke dosen.
+- Jika target down, pengujian dihentikan dan dilaporkan ke dosen. Liveness dicek sebelum & sesudah fase aktif; target tetap HTTP 200.
 
 ## Rencana Lanjutan
 
-- (Hati-hati) enumerasi endpoint OMP standar yang aman secara non-destruktif (mis. `/index.php`, halaman katalog publik) dengan rate sangat rendah.
-- Lanjutkan korelasi CVE spesifik OMP 3.3.0.12 dari advisory PKP resmi.
-- Bila disetujui & target stabil: port scan konservatif terbatas (top ports, timing lambat) seperti pada target lama.
-- Susun laporan target baru mengikuti struktur laporan target lama.
+- Fokus wajib tubes (Information Gathering, Sensitive Data Exposure, Injection, File Upload) sudah ditangani semuanya dengan hasil terdokumentasi (DITK-001..DITK-009).
+- Finalisasi laporan akhir target baru: lengkapi bukti screenshot/raw HTTP untuk lampiran (format wajib tubes butuh bukti visual).
+- Review konsistensi severity & pemetaan OWASP/CWE sebelum submit.
+- Jika ada waktu & target stabil: verifikasi ulang ringan satu temuan utama (DITK-001 versi) untuk memperkuat bukti.

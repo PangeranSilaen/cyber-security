@@ -8,7 +8,7 @@ Project UAS ini melakukan identifikasi kerentanan non-destruktif terhadap target
 
 Target adalah platform penerbitan **Open Monograph Press (OMP) 3.3.0.12** dari PKP (Public Knowledge Project), berjalan di `openresty`, IP `103.154.74.161` (shared host dengan `perpustakaan.itk.ac.id` dan layanan ITK lain). Lapisan transport baik (HSTS preload, redirect HTTP->HTTPS), namun terdapat beberapa temuan: komponen aplikasi usang dengan CVE publik (High), cookie sesi tanpa flag keamanan (Medium), serta sejumlah misconfiguration dan information disclosure (Low/Info).
 
-Seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada kerentanan yang dibuktikan dapat dieksploitasi; verifikasi dibatasi pada status HTTP, header, dan fingerprint versi. Daftar lengkap finding (DITK-001..DITK-007) dan pemetaan OWASP/CWE ada di `evidence/findings-dev-itkpress.md`.
+Seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada kerentanan yang dibuktikan dapat dieksploitasi; verifikasi dibatasi pada status HTTP, header, dan fingerprint versi. Dua topik wajib instruksi tubes - **Injection Attack** dan **Unrestricted File Upload** - telah diuji secara non-destruktif: input pencarian publik tampak ter-sanitasi (tidak ada error/anomali SQL), dan mekanisme upload OMP berada di balik autentikasi (tidak terjangkau anonim). Daftar lengkap finding (DITK-001..DITK-009) dan pemetaan OWASP/CWE ada di `evidence/findings-dev-itkpress.md`.
 
 ## 2. Scope Dan Batasan Etika
 
@@ -33,6 +33,7 @@ Seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada 
 - `Resolve-DnsName`, `curl.exe` (PowerShell 7, Windows).
 - Nmap 7.80 (`C:\Program Files (x86)\Nmap\nmap.exe`).
 - Firecrawl search (dorking pasif).
+- Deteksi injection non-destruktif manual via `curl.exe` (perbandingan baseline vs marker, tanpa UNION/time-based/dump).
 - Lookup database CVE publik (CISA Security Bulletin, advisory PKP/OJS, Exploit-DB).
 
 ## 5. Hasil Fingerprint
@@ -58,6 +59,10 @@ Seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada 
 | DITK-005 | Shared host + sibling produksi (OSINT) | Info | High |
 | DITK-006 | Registrasi akun terbuka (pengganda risiko CVE auth) | Low | High |
 | DITK-007 | Directory listing `/cache/` + file metadata versi | Low | High |
+| DITK-008 | Injection (search) - diuji non-destruktif, tidak terdeteksi | Info (negatif) | High |
+| DITK-009 | Unrestricted file upload - gated di balik login, tidak terjangkau | Info (negatif) | High |
+
+Catatan topik wajib tubes: DITK-008 (Injection) dan DITK-009 (File Upload) adalah dua fokus kerentanan yang diminta instruksi. Keduanya DIUJI secara non-destruktif dengan hasil negatif (input pencarian ter-sanitasi; upload berada di balik autentikasi). Diuji, dibuktikan dengan bukti, tanpa overclaim.
 
 Catatan validasi: `/config.inc.php` HTTP 200 namun hanya 2 byte (dieksekusi PHP) - BUKAN kebocoran kredensial, dicatat sebagai false positive. Detail di `evidence/findings-dev-itkpress.md`.
 
@@ -87,6 +92,7 @@ Tidak ada kerentanan yang dibuktikan dapat dieksploitasi karena pengujian dibata
 - Korelasi CVE bersifat indikatif (versi-ke-advisory); konfirmasi pasti memerlukan pengujian terotorisasi (di luar batas non-destruktif).
 - Dorking publik nihil (dev box belum/tidak terindeks).
 - Scanning dibatasi pada target resmi; host produksi sibling tidak di-scan aktif.
+- Injection diuji hanya pada parameter GET publik (`query`); parameter di balik autentikasi tidak diuji (butuh login = di luar batas izin). File upload hanya diidentifikasi kontrolnya dari halaman publik; tidak membuat akun dan tidak mengunggah file uji demi kepatuhan etika non-destruktif.
 
 ## 10. Reproduksi
 
