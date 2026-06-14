@@ -1,0 +1,115 @@
+// Findings data DITK-001..003 (format tubes a-f)
+module.exports = [
+{
+  id: "DITK-001",
+  nama: "Komponen Usang / Vulnerable & Outdated Components (Open Monograph Press 3.3.0.12)",
+  severity: "High",
+  cvss: "CVSS v3.1: 8.8 (High) - indikatif, berdasarkan korelasi advisory, bukan eksploitasi",
+  owasp: "OWASP A06:2021 Vulnerable and Outdated Components; CWE-1104 Use of Unmaintained Third Party Components",
+  deskripsi: "Target berjalan pada Open Monograph Press (OMP) versi 3.3.0.12 dari PKP. Versi ini tertinggal beberapa patch keamanan penting pada branch 3.3.0.x dan berada di bawah seluruh ambang perbaikan keamanan yang dirilis PKP.",
+  dampak: "High. Komponen usang membuka kemungkinan jalur eksploitasi terdokumentasi. Beberapa CVE pada rentang versi ini berkategori serius (privilege escalation / arbitrary code execution), umumnya memerlukan kondisi tertentu atau akun terautentikasi. Untuk platform publikasi yang mengizinkan registrasi (lihat DITK-006), prasyarat tersebut lebih mudah dipenuhi.",
+  mitigasi: [
+    "Update OMP ke rilis stabil terbaru pada branch yang didukung (minimal melewati 3.3.0.21; idealnya 3.4.x/3.5.x bila kompatibel).",
+    "Terapkan patch management rutin dan pantau advisory keamanan PKP.",
+    "Minimalkan version disclosure agar tidak mempermudah pencocokan CVE (lihat DITK-004).",
+  ],
+  cve: [
+    "PKP OJS/OMP/OPS before 3.3.0.16: memungkinkan arbitrary code execution dan privilege escalation via crafted script (CISA Security Bulletin, 27 Nov 2024).",
+    "PKP below 3.3.0.18: dikategorikan critical vulnerabilities dengan CVE publik (advisory komunitas PKP/OJS).",
+    "PKP OJS/OMP/OPS before 3.3.0.21: CVE-2024-56525 (User-XML fatal vulnerabilities) dan lainnya (CISA Security Bulletin, 26 Feb 2025).",
+    "XSS via Host Header injection pada PKP 3.3 (Exploit-DB 50881) - memerlukan kondisi tertentu.",
+  ],
+  repro: [
+    "Buka https://dev-itkpress.itk.ac.id/home di browser.",
+    "Lihat page source (Ctrl+U) dan cari tag <meta name=\"generator\">.",
+    "Amati nilai: Open Monograph Press 3.3.0.12; versi juga muncul pada query string aset (?v=3.3.0.12).",
+    "Verifikasi silang via PowerShell: curl.exe -s https://dev-itkpress.itk.ac.id/dbscripts/xml/version.xml (menampilkan <release>3.3.0.12</release>).",
+    "Cocokkan versi terhadap database CVE publik (CISA/CVE/PKP advisory). Tidak ada payload eksploitasi yang dijalankan.",
+  ],
+  payload: "Tidak ada payload aktif. Identifikasi versi murni dari metadata publik (meta generator + version.xml).",
+  rawHttp: {
+    caption: "Cuplikan version.xml (GET /dbscripts/xml/version.xml)",
+    lines: ["<version>", "  <application>omp</application>", "  <release>3.3.0.12</release>", "  ...", "</version>"],
+  },
+  shots: [{
+    title: "Page source homebrowser menampilkan meta generator OMP 3.3.0.12",
+    steps: [
+      "Sumber: browser di https://dev-itkpress.itk.ac.id/home, tekan Ctrl+U.",
+      "Gunakan Ctrl+F pada page source, ketik: generator.",
+      "Screenshot baris <meta name=\"generator\" content=\"Open Monograph Press 3.3.0.12\"> dengan address bar terlihat.",
+    ],
+  }],
+},
+{
+  id: "DITK-002",
+  nama: "Sensitive Cookie Tanpa Flag Keamanan (Session Cookie OMPSID)",
+  severity: "Medium",
+  cvss: "CVSS v3.1: 5.4 (Medium) - indikatif",
+  owasp: "OWASP A05:2021 Security Misconfiguration; CWE-1004 (HttpOnly), CWE-614 (Secure), CWE-1275 (SameSite)",
+  deskripsi: "Cookie sesi OMPSID di-set tanpa atribut HttpOnly, Secure, maupun SameSite. Hal ini memperbesar dampak bila terdapat kerentanan sisi klien.",
+  dampak: "Medium. Tanpa HttpOnly cookie dapat dibaca skrip klien (memperbesar dampak XSS). Tanpa Secure cookie berpotensi terkirim pada koneksi non-HTTPS (sebagian dimitigasi HSTS). Tanpa SameSite memperbesar risiko CSRF. Belum diuji aktif.",
+  mitigasi: [
+    "Setel cookie sesi dengan atribut HttpOnly; Secure; SameSite=Lax (atau Strict bila alur mengizinkan).",
+    "Pada PKP/OMP, konfigurasikan melalui config.inc.php dan/atau header pada web server (openresty/nginx).",
+  ],
+  repro: [
+    "Jalankan: curl.exe -s -v -o NUL https://dev-itkpress.itk.ac.id/home 2>&1 | Select-String 'Set-Cookie'.",
+    "Amati header Set-Cookie: OMPSID=...; path=/; domain=dev-itkpress.itk.ac.id.",
+    "Konfirmasi tidak adanya atribut HttpOnly, Secure, dan SameSite pada baris cookie tersebut.",
+    "Alternatif via browser: buka DevTools > Application > Cookies > pilih domain, periksa kolom HttpOnly/Secure/SameSite (kosong).",
+  ],
+  payload: "Tidak ada payload. Hanya membaca header Set-Cookie (nilai session di-redaksi pada bukti).",
+  rawHttp: {
+    caption: "Header respons GET /home (nilai OMPSID diredaksi demi etika)",
+    lines: [
+      "< HTTP/1.1 200 OK",
+      "< Server: openresty",
+      "< Set-Cookie: OMPSID=<REDACTED>; path=/; domain=dev-itkpress.itk.ac.id",
+      "< Cache-Control: no-store",
+      "< Strict-Transport-Security: max-age=63072000; preload",
+    ],
+  },
+  shots: [{
+    title: "DevTools menampilkan cookie OMPSID tanpa centang HttpOnly/Secure/SameSite",
+    steps: [
+      "Sumber: browser di https://dev-itkpress.itk.ac.id/home, buka DevTools (F12) > tab Application > Cookies.",
+      "Pilih domain dev-itkpress.itk.ac.id, klik baris OMPSID.",
+      "Screenshot tabel cookie; pastikan kolom HttpOnly, Secure, dan SameSite kosong. SENSOR/blur nilai cookie value.",
+    ],
+  }],
+},
+{
+  id: "DITK-003",
+  nama: "Missing HTTP Security Headers",
+  severity: "Low",
+  cvss: "CVSS v3.1: 3.7 (Low) - indikatif",
+  owasp: "OWASP A05:2021 Security Misconfiguration; CWE-693 Protection Mechanism Failure",
+  deskripsi: "Respons utama tidak menyertakan sejumlah header keamanan defensif: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, dan Permissions-Policy.",
+  dampak: "Low. Tanpa CSP dan X-Frame-Options, risiko clickjacking dan dampak XSS meningkat. Tanpa X-Content-Type-Options: nosniff ada risiko MIME sniffing. Bukan kerentanan langsung yang berdiri sendiri, melainkan hardening gap yang memperbesar dampak kerentanan lain.",
+  mitigasi: [
+    "Tambahkan Content-Security-Policy yang sesuai konten aplikasi.",
+    "Tambahkan X-Frame-Options: SAMEORIGIN (atau gunakan CSP frame-ancestors).",
+    "Tambahkan X-Content-Type-Options: nosniff, Referrer-Policy, dan Permissions-Policy secara konsisten.",
+  ],
+  repro: [
+    "Jalankan: curl.exe -s -I https://dev-itkpress.itk.ac.id/home.",
+    "Periksa daftar header respons.",
+    "Konfirmasi header keamanan berikut TIDAK ada: Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.",
+    "Catat bahwa Strict-Transport-Security (HSTS) ADA sebagai kontrol positif.",
+  ],
+  payload: "Tidak ada payload. Hanya membaca header respons standar.",
+  rawHttp: {
+    caption: "Header respons GET /home - hanya HSTS yang hadir dari kelompok header keamanan",
+    lines: [
+      "< HTTP/1.1 200 OK",
+      "< Server: openresty",
+      "< Content-Type: text/html; charset=utf-8",
+      "< Cache-Control: no-store",
+      "< Strict-Transport-Security: max-age=63072000; preload",
+      "<   (TIDAK ADA: Content-Security-Policy / X-Frame-Options /",
+      "<    X-Content-Type-Options / Referrer-Policy / Permissions-Policy)",
+    ],
+  },
+  shots: [],
+},
+];

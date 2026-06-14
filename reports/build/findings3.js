@@ -1,0 +1,71 @@
+// Findings data DITK-008..009 (topik WAJIB tubes: Injection & File Upload) - hasil negatif/kontrol positif
+module.exports = [
+{
+  id: "DITK-008",
+  nama: "Injection Attack - Deteksi Non-Destruktif pada Parameter Pencarian (Hasil: Tidak Terdeteksi / Input Ter-sanitasi)",
+  severity: "Informational",
+  cvss: "N/A (tidak ditemukan kerentanan)",
+  owasp: "OWASP A03:2021 Injection (diuji); CWE-89 SQL Injection (tidak terbukti)",
+  deskripsi: "Topik Injection (fokus wajib tubes) diuji secara non-destruktif pada parameter pencarian publik query di endpoint /home/search/search. Pengujian membandingkan respons baseline terhadap marker injeksi umum, hanya mengamati status HTTP, panjang respons, dan kemunculan string error database. TANPA UNION, TANPA time-based (SLEEP), TANPA exfiltrasi/dump data.",
+  dampak: "Informational (hasil negatif). Endpoint pencarian memperlakukan input sebagai literal string (tampak parameterized/ter-sanitasi). Tidak ada error database yang bocor dan tidak ada anomali status/struktur respons yang mengindikasikan SQL injection. Tidak diklaim sebagai kerentanan.",
+  mitigasi: [
+    "Pertahankan praktik parameterized query / prepared statements yang sudah tampak diterapkan.",
+    "Terus lakukan validasi & sanitasi input pada seluruh parameter, termasuk yang berada di balik autentikasi.",
+  ],
+  repro: [
+    "Ambil baseline: curl.exe -s -o NUL -w \"%{http_code} %{size_download}\" -G --data-urlencode \"query=book\" https://dev-itkpress.itk.ac.id/home/search/search (hasil: 200, 16775 byte).",
+    "Kirim marker single quote: --data-urlencode \"query=book'\" (hasil: 200, ~16786 byte, tidak ada error SQL).",
+    "Kirim marker double quote: --data-urlencode \"query=book\\\"\" (hasil: 200, ~16786 byte, tidak ada error).",
+    "Kirim marker bracket: --data-urlencode \"query=book')\" (hasil: 200, ~16788 byte, tidak ada error).",
+    "Kirim marker comment: --data-urlencode \"query=book'--\" (hasil: 200, 6263 byte = halaman no-results normal, BUKAN indikator injection).",
+    "Cek body terhadap pola error DB (SQL syntax, mysqli, PDOException, Warning:, Fatal error): tidak satu pun muncul.",
+  ],
+  payload: "Marker deteksi non-destruktif: book' , book\" , book') , book'-- . Murni untuk memicu error (bila ada), TANPA UNION/SLEEP/dump. Tidak ada data yang diekstraksi.",
+  rawHttp: {
+    caption: "Ringkasan hasil deteksi injection (status & ukuran body)",
+    lines: [
+      "INPUT                 HTTP   BYTES    ERROR-DB",
+      "book (baseline)       200    16775    -",
+      "book'                 200    16786    tidak ada",
+      "book\"                 200    16786    tidak ada",
+      "book')                200    16788    tidak ada",
+      "book'--               200     6263    tidak ada (no-results normal)",
+    ],
+  },
+  shots: [],
+  catatan: "Keterbatasan: pengujian dibatasi pada parameter GET publik (query). Parameter di balik autentikasi (form submission, dashboard editor OMP) tidak diuji karena memerlukan akun/login (di luar batas non-destruktif & izin).",
+},
+{
+  id: "DITK-009",
+  nama: "Unrestricted File Upload - Identifikasi Kontrol (Hasil: Gated di Balik Autentikasi)",
+  severity: "Informational",
+  cvss: "N/A (tidak ditemukan unrestricted upload yang terjangkau)",
+  owasp: "OWASP A04:2021 Insecure Design / A05 Security Misconfiguration (diuji); CWE-434 Unrestricted Upload of File with Dangerous Type (tidak terjangkau)",
+  deskripsi: "Topik File Upload (fokus wajib tubes) diidentifikasi dari halaman publik tanpa autentikasi. Mekanisme unggah berkas Open Monograph Press (submission wizard) diperiksa keterjangkauannya bagi pengguna anonim. TIDAK membuat akun, TIDAK login, TIDAK mengunggah file apa pun.",
+  dampak: "Informational (hasil negatif). Seluruh alur unggah berkas (manuskrip, galley, supplementary files) berada di dalam workflow submission yang memerlukan autentikasi. Tanpa akun tidak terdapat unrestricted file upload yang terjangkau publik. Karena registrasi terbuka (DITK-006), permukaan upload secara teoritis dapat dicapai setelah membuat akun - namun pengujian aktif terhadapnya berada DI LUAR batas non-destruktif/izin dan TIDAK dilakukan.",
+  mitigasi: [
+    "Pertahankan gating autentikasi pada seluruh endpoint upload.",
+    "Untuk environment dev, batasi registrasi (DITK-006) agar permukaan upload tidak mudah dijangkau.",
+    "Pastikan validasi tipe/ekstensi/konten file di sisi server pada alur submission (pengujian aktif memerlukan otorisasi).",
+  ],
+  repro: [
+    "Jalankan: curl.exe -s -I https://dev-itkpress.itk.ac.id/home/submission/wizard.",
+    "Amati respons: HTTP 302 Found dengan Location: /home/login?source=%2Fhome%2Fsubmission%2Fwizard.",
+    "Jalankan: curl.exe -s https://dev-itkpress.itk.ac.id/home/about/submissions (HTTP 200, halaman informasi publik, bukan form upload aktif).",
+    "Simpulkan: jalur upload tidak terjangkau anonim (redirect ke login).",
+  ],
+  payload: "Tidak ada payload. Tidak ada file yang diunggah, tidak ada akun yang dibuat, tidak ada login.",
+  rawHttp: {
+    caption: "Respons GET /home/submission/wizard (gated)",
+    lines: [
+      "> GET /home/submission/wizard HTTP/1.1",
+      "> Host: dev-itkpress.itk.ac.id",
+      "<",
+      "< HTTP/1.1 302 Found",
+      "< Location: https://dev-itkpress.itk.ac.id/home/login?source=%2Fhome%2Fsubmission%2Fwizard",
+    ],
+  },
+  shots: [],
+  catatan: "Keterbatasan: validasi tipe/ekstensi/konten file yang sebenarnya hanya dapat diuji dari dalam sesi terautentikasi, yang tidak dilakukan demi kepatuhan etika.",
+},
+];
