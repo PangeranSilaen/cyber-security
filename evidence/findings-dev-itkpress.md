@@ -216,6 +216,12 @@ Hanya resolusi DNS publik. Tidak ada scanning ke host lain.
 
 Pastikan isolasi antar virtual host dan inventarisasi layanan pada IP bersama.
 
+**Catatan Tambahan (robots.txt & sibling produksi):**
+
+- `GET /robots.txt` = HTTP 200, isi: `User-agent: *` / `Allow: /` / `Sitemap: https://itkpress.itk.ac.id/sitemap.xml`.
+- `Allow: /` adalah konfigurasi normal (bukan kerentanan), namun `Sitemap` menunjuk ke `itkpress.itk.ac.id` (TANPA prefix `dev-`) - mengindikasikan adanya host **produksi** sibling dan bahwa environment `dev` ini kemungkinan memakai konfigurasi salinan produksi (config artifact). 
+- Scope: `itkpress.itk.ac.id` TIDAK di-scan aktif (di luar target resmi). Dicatat sebagai konteks OSINT pasif saja.
+
 ---
 
 ## Kontrol Keamanan Positif (Target Baru)
