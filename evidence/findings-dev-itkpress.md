@@ -224,6 +224,105 @@ Pastikan isolasi antar virtual host dan inventarisasi layanan pada IP bersama.
 
 ---
 
+## DITK-006: Registrasi Akun Terbuka (Self-Registration)
+
+**ID:** DITK-006
+
+**Judul:** Endpoint registrasi pengguna terbuka untuk publik
+
+**Status:** Terkonfirmasi (konteks attack surface)
+
+**Severity Sementara:** Low (menjadi pengganda risiko untuk DITK-001)
+
+**Confidence:** High (endpoint `/home/user/register` = HTTP 200)
+
+**OWASP/CWE:** OWASP A05:2021 Security Misconfiguration (kebijakan akun); konteks A06 (memperbesar dampak CVE yang butuh auth)
+
+**Bukti Non-Destruktif:**
+
+- `GET /home/user/register` = HTTP 200 (form registrasi tersedia).
+- `GET /home/login` = HTTP 200.
+- Tidak ada percobaan membuat akun, submit form, atau autentikasi.
+- Waktu: 2026-06-14.
+
+**Analisis:**
+
+OMP mengizinkan self-registration. Pada platform produksi ini wajar, namun pada env `dev` yang menjalankan versi usang (DITK-001), registrasi terbuka memperbesar dampak: beberapa CVE OMP/PKP 3.3.0.x (privilege escalation, user-XML) memerlukan akun terautentikasi. Dengan registrasi terbuka, prasyarat "authenticated" lebih mudah dipenuhi penyerang.
+
+**Dampak Potensial:**
+
+Menurunkan ambang eksploitasi untuk kerentanan yang membutuhkan akun. Bukan kerentanan mandiri.
+
+**Batasan Validasi:**
+
+Hanya cek ketersediaan endpoint (status HTTP). Tidak ada pendaftaran akun, tidak ada eksploitasi.
+
+**Rekomendasi Mitigasi:**
+
+Pada environment dev, batasi registrasi (disable self-registration atau batasi via allowlist/email domain), dan utamakan update versi (DITK-001). Pertimbangkan menutup akses dev dari publik (IP allowlist/VPN).
+
+---
+
+## DITK-007: Directory Listing Aktif pada `/cache/`
+
+**ID:** DITK-007
+
+**Judul:** Listing direktori aktif pada `/cache/`, mengekspos struktur file internal aplikasi
+
+**Status:** Terkonfirmasi (misconfiguration)
+
+**Severity Sementara:** Low
+
+**Confidence:** High (listing terverifikasi live)
+
+**OWASP/CWE:** OWASP A05:2021 Security Misconfiguration; CWE-548 Exposure of Information Through Directory Listing
+
+**Bukti Non-Destruktif:**
+
+- `GET /cache/` = HTTP 200 dengan penanda `Index of`, menampilkan 50+ entri: file CSS gabungan (`0-stylesheet.css`), cache locale (`fc-locale-*.php`), cache ONIX codelist (`fc-List*_codelistItems-en_US.php`), folder `HTML/` dan `URI/`.
+- File `.php` di `/cache/` dieksekusi server (tidak membocorkan source code), namun daftar isi direktori tetap terekspos.
+- Penguat: `GET /dbscripts/xml/version.xml` = HTTP 200 (`<release>3.3.0.12</release>`); `GET /docs/release-notes/README-3.3.0` = HTTP 200.
+- Waktu: 2026-06-14.
+
+**Analisis:**
+
+Autoindex aktif pada direktori internal aplikasi (`/cache/`) dan beberapa file dokumentasi/skema versi dapat diakses langsung. Ini information disclosure yang mempermudah fingerprinting (mengonfirmasi versi 3.3.0.12 lewat jalur lain) dan memetakan struktur instalasi. Sejalan dengan pola F-011 pada target lama.
+
+**Dampak Potensial:**
+
+Mempermudah enumerasi dan konfirmasi versi/komponen; memperkuat DITK-001 dan DITK-004.
+
+**Batasan Validasi:**
+
+Hanya membaca halaman listing dan file metadata versi. Tidak ada file yang diunduh untuk dieksekusi atau dimodifikasi.
+
+**Rekomendasi Mitigasi:**
+
+Nonaktifkan directory listing (`Options -Indexes` / `autoindex off`), batasi akses langsung ke `/cache/`, `/dbscripts/`, dan `/docs/` dari publik.
+
+---
+
+## DITK-INFO: Validasi config.inc.php (False Positive Kebocoran Kredensial)
+
+**ID:** DITK-INFO (catatan validasi, bukan finding)
+
+**Judul:** `/config.inc.php` HTTP 200 namun TIDAK membocorkan kredensial
+
+**Status:** False positive tervalidasi
+
+**Bukti Non-Destruktif:**
+
+- `GET /config.inc.php` = HTTP 200, namun `Content-Type: text/html` dan `Content-Length: 2` (body hanya `; `).
+- PHP mengeksekusi file (bukan menyajikan source). Tidak ada penanda konfigurasi INI (`[database]`, `password=`, `username=`, `salt`, dll) pada body.
+- Isi file TIDAK ditampilkan/disimpan demi etika (andai berisi secret).
+- Waktu: 2026-06-14.
+
+**Analisis:**
+
+HTTP 200 di sini menyesatkan; karena diproses sebagai PHP, isi konfigurasi tidak bocor. Tidak diklaim sebagai kerentanan. Dicatat agar tidak salah lapor. (Pengecekan `.git/config`, `.env`, `composer.json`, `composer.lock`, `.gitignore` semuanya = HTTP 404; `.htaccess` = 403.)
+
+---
+
 ## Kontrol Keamanan Positif (Target Baru)
 
 | Kontrol | Bukti | Catatan |
@@ -244,5 +343,7 @@ Pastikan isolasi antar virtual host dan inventarisasi layanan pada IP bersama.
 | DITK-003 | Missing security headers | Low | A05 | CWE-693 |
 | DITK-004 | Version disclosure (OMP 3.3.0.12) | Low (Info) | A05 / A06 | CWE-200 |
 | DITK-005 | Shared host (OSINT) | Info | Reconnaissance | CWE-200 |
+| DITK-006 | Registrasi akun terbuka (pengganda risiko) | Low | A05 (+ konteks A06) | - |
+| DITK-007 | Directory listing `/cache/` | Low | A05 | CWE-548 |
 
 Catatan: seluruh severity bersifat sementara berdasarkan bukti non-destruktif.

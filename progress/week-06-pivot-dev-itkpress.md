@@ -42,8 +42,13 @@ Minggu 6 - Pivot ke target baru `dev-itkpress.itk.ac.id` (arahan dosen) + recon 
 - DITK-002: Session cookie tanpa flag keamanan (Medium).
 - DITK-003: Missing security headers (Low).
 - DITK-004: Version disclosure (Low/Info).
-- DITK-005: Shared host dengan layanan ITK lain (Info).
-- Detail lengkap di `evidence/findings-dev-itkpress.md`.
+- DITK-005: Shared host dengan layanan ITK lain + sibling produksi `itkpress.itk.ac.id` (Info).
+- DITK-006: Registrasi akun terbuka, pengganda risiko CVE yang butuh auth (Low).
+- DITK-007: Directory listing `/cache/` + file metadata versi (Low).
+- Validasi: `/config.inc.php` HTTP 200 tapi 2 byte (dieksekusi PHP) = false positive kebocoran kredensial.
+- Enumerasi endpoint: press path = `/home`; `/home/login`, `/home/user/register`, `/home/catalog`, `/home/search` semua 200.
+- Port scan -T2: 80/443 open, 97 filtered (identik perpustakaan, shared host).
+- Detail lengkap di `evidence/findings-dev-itkpress.md`; laporan di `reports/final-report-dev-itkpress.md`.
 
 ## Kendala
 
