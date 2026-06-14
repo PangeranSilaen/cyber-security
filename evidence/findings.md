@@ -423,6 +423,132 @@ Pada level organisasi, pastikan isolasi antar virtual host, inventarisasi subdom
 
 ---
 
+## F-011: Directory Listing (Apache Autoindex) Aktif
+
+**ID:** F-011
+
+**Judul:** Listing direktori aktif pada beberapa path `wp-content`, membuka struktur file dan nama file source
+
+**Status:** Terkonfirmasi (misconfiguration)
+
+**Severity Sementara:** Medium
+
+**Confidence:** High (listing terverifikasi live via GET tunggal dan terindeks Google)
+
+**OWASP/CWE:** OWASP A05:2021 Security Misconfiguration; CWE-548 Exposure of Information Through Directory Listing; CWE-200 Information Exposure
+
+**Bukti Non-Destruktif:**
+
+- Ditemukan via Google dorking pasif: `site:perpustakaan.itk.ac.id intitle:"index of"` (mengembalikan halaman `Index of /wp-content/plugins/wp-stats-manager/...`).
+- Verifikasi non-destruktif (GET tunggal per path), seluruhnya HTTP 200 dengan penanda `Index of`:
+  - `/wp-content/uploads/` -> listing berisi folder tahun `2020/`..`2026/` dan folder plugin (`Divi/`, `elementor/`, `maxmegamenu/`, `redux/`, `ultimatemember/`, `wp-statistics/`, `wpforms/`).
+  - `/wp-content/plugins/wp-stats-manager/includes/` -> listing menampilkan nama file PHP source: `wsm_admin_interface.php`, `wsm_cron.php`, `wsm_db.php`, `wsm_functions.php`, `wsm_init.php`, `wsm_modal.php`, `wsm_requests.php`, `wsm_shortcodeTable.php`, `wsm_statistics.php`.
+  - `/wp-content/plugins/wp-stats-manager/` dan `/images/` juga terindeks dengan listing.
+- Waktu: 2026-06-14.
+
+**Analisis:**
+
+Web server (Apache autoindex) menampilkan daftar isi direktori ketika tidak ada index file. Ini membocorkan struktur direktori, daftar plugin yang terpasang, dan nama file source PHP. Informasi ini mempermudah penyerang melakukan fingerprinting dan memetakan komponen rentan tanpa perlu menebak. Walau file PHP source tidak dieksekusi sebagai teks (di-handle PHP), terungkapnya nama file dan struktur adalah information disclosure yang nyata.
+
+**Dampak Potensial:**
+
+Mempercepat enumerasi komponen, mengungkap plugin/versi, dan memperluas permukaan serangan terarah (lihat F-012 dan F-013 yang ditemukan justru karena listing ini).
+
+**Batasan Validasi:**
+
+Hanya GET standar untuk membaca halaman listing. Tidak ada file yang diunduh untuk dieksekusi, tidak ada upaya menulis/menghapus file.
+
+**Rekomendasi Mitigasi:**
+
+Nonaktifkan directory listing (`Options -Indexes` di Apache atau `autoindex off` di Nginx), dan/atau tambahkan `index.php`/`index.html` kosong pada direktori. Khusus WordPress, blok akses langsung ke direktori `wp-content/uploads` dan `wp-content/plugins` untuk listing.
+
+---
+
+## F-012: Eksposur File Profil Anggota (Ultimate Member) + Folder Browsable
+
+**ID:** F-012
+
+**Judul:** Folder upload Ultimate Member dapat di-browse dan file profil anggota dapat dienumerasi via ID
+
+**Status:** Terkonfirmasi (sensitive data exposure / broken access control)
+
+**Severity Sementara:** High
+
+**Confidence:** High (listing dan file terverifikasi live; struktur path per-user-ID terkonfirmasi)
+
+**OWASP/CWE:** OWASP A01:2021 Broken Access Control & A05:2021 Security Misconfiguration; CWE-548 Directory Listing; CWE-200 Information Exposure; CWE-639 Authorization Bypass Through User-Controlled Key (akses file by predictable ID)
+
+**Bukti Non-Destruktif:**
+
+- Plugin Ultimate Member (manajemen membership) terpasang; direktori `/wp-content/uploads/ultimatemember/` dapat di-browse (HTTP 200, `Index of`) dan berisi subfolder `1/` dan `temp/`.
+- `/wp-content/uploads/ultimatemember/1/` -> HTTP 200, listing aktif, berisi 7 file `.jpg` (karakterisasi tipe file saja; isi/nama file TIDAK diunduh demi melindungi PII).
+- Enumerasi keberadaan folder per user ID (cek HTTP status saja, tanpa mengunduh isi): `user_id 1` = HTTP 200 (listing, 7 file), `user_id 2`..`8` = HTTP 404. Pola path per-ID terkonfirmasi dapat ditebak/dienumerasi.
+- Ditemukan setelah directory listing (F-011) mengungkap folder `ultimatemember/` di bawah `uploads/`.
+- Waktu: 2026-06-14.
+
+**Analisis:**
+
+Ultimate Member menyimpan file yang diunggah anggota (mis. foto profil) di folder per-user-ID yang dapat ditebak, dan directory listing yang aktif membuat file tersebut dapat dijelajahi tanpa autentikasi. Foto profil anggota adalah data pribadi (PII). Kombinasi (a) path per-ID yang predictable dan (b) listing terbuka berarti file anggota dapat dijangkau pihak yang tidak berhak. Saat pengujian hanya `user_id 1` yang memiliki file, namun kelemahan kontrol akses tetap valid dan akan berdampak lebih besar seiring bertambahnya anggota.
+
+**Dampak Potensial:**
+
+Kebocoran file/PII anggota; memungkinkan harvesting foto/dokumen anggota secara otomatis melalui enumerasi ID. Jika folder juga menampung dokumen (KTP/KTM/berkas), dampaknya lebih serius.
+
+**Batasan Validasi:**
+
+Pengujian dibatasi pada pengecekan status HTTP dan tipe file (ekstensi). Tidak ada file gambar/dokumen yang diunduh atau dibuka, sesuai aturan etika UAS (perlindungan PII, non-destruktif). Versi persis plugin Ultimate Member tidak dapat dipastikan (readme di-block, HTTP 404), sehingga korelasi CVE spesifik tidak diklaim.
+
+**Rekomendasi Mitigasi:**
+
+Nonaktifkan directory listing pada `uploads` (lihat F-011); batasi akses langsung ke `wp-content/uploads/ultimatemember/` (mis. `.htaccess deny`, atau serve file via handler yang mengecek otorisasi); pertimbangkan menyimpan file anggota di luar webroot atau dengan nama acak non-enumerable. Tinjau pengaturan privasi Ultimate Member.
+
+---
+
+## F-013: Komponen WordPress Usang dengan Kerentanan Publik (Plugin)
+
+**ID:** F-013
+
+**Judul:** Beberapa plugin terpasang berada pada versi lama dengan kerentanan yang dipublikasikan
+
+**Status:** Terkonfirmasi usang (korelasi CVE pasif; tidak dieksploitasi)
+
+**Severity Sementara:** Medium
+
+**Confidence:** High untuk versi terdeteksi; korelasi CVE bersifat indikatif (banyak butuh autentikasi)
+
+**OWASP/CWE:** OWASP A06:2021 Vulnerable and Outdated Components; CWE-1104 Use of Unmaintained Third Party Components; CWE-937
+
+**Bukti Non-Destruktif:**
+
+- Versi plugin dibaca dari `readme.txt` masing-masing (GET tunggal), `Stable tag`:
+  - WPForms (Contact Form by WPForms) = `1.7.4.1` (Tested up to 6.0).
+  - Elementor Website Builder = `3.6.5` (Tested up to 5.9).
+  - WP Statistics = `14.10`.
+  - WP Visitor Statistics (wp-stats-manager) = `6.9.6` (sudah dicatat di F-006/enumerasi).
+- Korelasi CVE pasif (lookup database publik Wordfence/WPScan/Patchstack/NVD, tidak menyentuh target):
+  - WPForms `1.7.4.1` < `1.7.5.5`: terdampak Admin+ Arbitrary File Access / Directory Traversal (perlu hak admin). Versi terdeteksi berada di bawah versi fix.
+  - Elementor `3.6.5`: branch lama; sejumlah CVE diperbaiki pada versi setelahnya (mis. RCE/arbitrary file pada 3.6.x yang diperbaiki di rilis lebih baru; arbitrary file read auth pada versi jauh lebih baru). Mayoritas memerlukan autentikasi (contributor/admin).
+  - WP Visitor Statistics `6.9.6`: CVE-2023-0600 (Unauthenticated SQLi) berlaku untuk versi **before 6.9**. Versi terdeteksi `6.9.6` berada **di atas** ambang tersebut, sehingga untuk CVE itu tampak **sudah dipatch**. Tidak diklaim rentan untuk CVE-2023-0600.
+- Waktu: 2026-06-14.
+
+**Analisis:**
+
+Situs menjalankan beberapa plugin pada versi yang sudah tertinggal dari rilis terbaru. Untuk WPForms dan Elementor, versi terpasang berada di bawah versi yang memuat perbaikan keamanan, sehingga termasuk komponen usang dengan kerentanan terdokumentasi (umumnya membutuhkan akun terautentikasi untuk dieksploitasi). WP Visitor Statistics `6.9.6` justru tampak sudah melewati ambang CVE SQLi unauth utama, jadi tidak diklaim rentan untuk CVE tersebut. Penilaian ini berbasis korelasi versi-ke-advisory, bukan eksploitasi.
+
+**Dampak Potensial:**
+
+Komponen usang meningkatkan kemungkinan adanya jalur eksploitasi (terutama bila terdapat akun pengguna), dan memperbesar risiko rantai serangan bila dikombinasikan dengan misconfiguration lain (F-011/F-012).
+
+**Batasan Validasi:**
+
+Tidak ada eksploitasi, tidak ada pengiriman payload, tidak ada percobaan SQLi/file traversal aktif. Korelasi CVE bersifat indikatif berdasarkan versi yang terbaca; konfirmasi pasti memerlukan pengujian terotorisasi (mis. WPScan dengan API token) yang berada di luar batas non-destruktif sesi ini.
+
+**Rekomendasi Mitigasi:**
+
+Update seluruh plugin (WPForms, Elementor, WP Statistics, WP Visitor Statistics) ke versi terbaru yang didukung; aktifkan auto-update untuk plugin; hapus plugin yang tidak dipakai; terapkan patch management rutin dan pantau advisory (Wordfence/Patchstack/WPScan).
+
+---
+
 ## Kontrol Keamanan Positif (Teridentifikasi)
 
 Bagian ini mendokumentasikan konfigurasi yang sudah baik agar analisis berimbang dan tidak hanya menyoroti kelemahan.
@@ -455,5 +581,8 @@ Bagian ini mendokumentasikan konfigurasi yang sudah baik agar analisis berimbang
 | F-008 | TLS CBC ciphers (potensi LUCKY13) | Low | A02 Cryptographic Failures | CWE-327 |
 | F-009 | WAF/security layer aktif | Info (positif) | Mitigasi (A05/A06) | - |
 | F-010 | Shared hosting / subdomain attack surface | Info | Reconnaissance context | CWE-200 |
+| F-011 | Directory listing (autoindex) aktif | Medium | A05 Security Misconfiguration | CWE-548 / CWE-200 |
+| F-012 | Eksposur file profil anggota (Ultimate Member) | High | A01 Broken Access Control / A05 | CWE-548 / CWE-639 / CWE-200 |
+| F-013 | Plugin usang dengan CVE publik (WPForms/Elementor) | Medium | A06 Vulnerable & Outdated Components | CWE-1104 / CWE-937 |
 
 Catatan: seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada finding yang diklaim sebagai kerentanan terkonfirmasi yang dapat dieksploitasi, sesuai batasan UAS.

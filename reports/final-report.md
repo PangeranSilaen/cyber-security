@@ -3,11 +3,11 @@
 
 ## 1. Ringkasan Eksekutif
 
-Project UAS ini melakukan identifikasi kerentanan non-destruktif terhadap `https://perpustakaan.itk.ac.id/` dengan pendekatan Windows-first (PowerShell 7) dan tool tambahan via Docker. Aktivitas mencakup reconnaissance, footprinting, port/service enumeration konservatif, DNS dan subdomain enumeration pasif, TLS/header analysis, vulnerability identification non-destruktif, dan WAF detection.
+Project UAS ini melakukan identifikasi kerentanan non-destruktif terhadap `https://perpustakaan.itk.ac.id/` dengan pendekatan Windows-first (PowerShell 7) dan tool tambahan via Docker. Aktivitas mencakup reconnaissance, footprinting, port/service enumeration konservatif, DNS dan subdomain enumeration pasif, TLS/header analysis, vulnerability identification non-destruktif, WAF detection, dan Google dorking pasif (search engine OSINT).
 
-Secara umum target terkonfigurasi cukup baik: HSTS aktif, redirect HTTP ke HTTPS, TLSv1.3 dengan cipher grade A, user enumeration WordPress diblok, HTTP methods minimal, dan terdapat WAF/security layer aktif. Tidak ditemukan kerentanan kritis yang dapat dikonfirmasi secara non-destruktif. Temuan didominasi kategori Low dan Informational, dengan dua temuan Medium berupa outdated WordPress (5.9.13) beserta version disclosure (F-006) dan XML-RPC endpoint aktif (F-007).
+Secara umum lapisan transport target terkonfigurasi baik: HSTS aktif, redirect HTTP ke HTTPS, TLSv1.3 dengan cipher grade A, user enumeration WordPress diblok, HTTP methods minimal, dan terdapat WAF/security layer aktif. Namun melalui Google dorking pasif dan verifikasi non-destruktif ditemukan misconfiguration tingkat aplikasi yang lebih serius: directory listing (autoindex) aktif (F-011) dan eksposur file profil anggota Ultimate Member yang dapat di-browse serta dienumerasi via user ID (F-012, severity High, menyentuh PII). Selain itu teridentifikasi sejumlah plugin usang dengan kerentanan publik (F-013) serta dua temuan Medium sebelumnya: outdated WordPress 5.9.13 + version disclosure (F-006) dan XML-RPC endpoint aktif (F-007).
 
-Seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada finding yang diklaim sebagai kerentanan terkonfirmasi yang dapat dieksploitasi, sesuai batasan UAS. Daftar lengkap finding (F-001..F-010), kontrol positif, dan pemetaan OWASP/CWE ada di `evidence/findings.md`.
+Seluruh severity bersifat sementara berdasarkan bukti non-destruktif. Tidak ada finding yang diklaim sebagai kerentanan terkonfirmasi yang dieksploitasi; verifikasi dibatasi pada GET tunggal dan pengecekan status/tipe file (isi file PII tidak diunduh), sesuai batasan UAS. Daftar lengkap finding (F-001..F-013), kontrol positif, dan pemetaan OWASP/CWE ada di `evidence/findings.md`.
 
 ## 2. Scope Dan Batasan Etika
 
@@ -140,14 +140,19 @@ Shodan CLI sudah diinisialisasi user, tetapi query `host`/`search` mengembalikan
 | F-008 | TLS CBC ciphers (potensi LUCKY13) | Low | Medium |
 | F-009 | WAF/security layer aktif (kontrol positif) | Info | Medium-High |
 | F-010 | Shared hosting / subdomain attack surface (OSINT) | Info | High |
+| F-011 | Directory listing (Apache autoindex) aktif | Medium | High |
+| F-012 | Eksposur file profil anggota (Ultimate Member), folder browsable + enumerable by ID | High | High |
+| F-013 | Plugin usang dengan CVE publik (WPForms 1.7.4.1, Elementor 3.6.5) | Medium | High (versi) |
 
-Detail lengkap, bukti, dan rekomendasi tiap finding ada di `evidence/findings.md`, termasuk bagian Kontrol Keamanan Positif dan Ringkasan Pemetaan OWASP Top 10 / CWE.
+F-011, F-012, dan F-013 ditemukan melalui Google dorking pasif (operator `site:` + `intitle:"index of"`) lalu diverifikasi non-destruktif dengan GET tunggal. Detail lengkap, bukti, dan rekomendasi tiap finding ada di `evidence/findings.md`, termasuk bagian Kontrol Keamanan Positif dan Ringkasan Pemetaan OWASP Top 10 / CWE.
 
 ## 12. Analisis Risiko
 
-Risiko keseluruhan rendah-menengah. Target menunjukkan postur keamanan transport dan akses yang baik (TLS modern, HSTS, WAF, user enumeration diblok, HTTP methods minimal). Area perbaikan utama bersifat patch management dan pengurangan attack surface aplikasi:
+Risiko keseluruhan rendah-menengah pada lapisan transport, namun terdapat beberapa misconfiguration aplikasi yang lebih serius dan ditemukan melalui dorking pasif. Target menunjukkan postur keamanan transport dan akses yang baik (TLS modern, HSTS, WAF, user enumeration diblok, HTTP methods minimal), tetapi ada celah pada eksposur file dan komponen usang:
 
-- Prioritas tertinggi: update WordPress core/theme/plugin yang outdated (F-006). Komponen lama adalah vektor paling realistis bila ada CVE publik yang cocok.
+- Prioritas tertinggi: **eksposur file profil anggota (F-012)** — folder Ultimate Member dapat di-browse dan file dapat dienumerasi via user ID. Ini menyentuh data pribadi (PII) dan termasuk broken access control.
+- Prioritas tinggi: **directory listing aktif (F-011)** yang membuka struktur file, daftar plugin, dan nama file source; ini juga yang memungkinkan F-012 ditemukan.
+- Prioritas tinggi: update WordPress core/theme dan **plugin usang (F-006, F-013)** — komponen lama (WordPress 5.9.x, WPForms 1.7.4.1, Elementor 3.6.5) adalah vektor paling realistis bila ada CVE publik yang cocok.
 - Prioritas menengah: batasi/nonaktifkan XML-RPC (F-007) untuk mengurangi vektor brute force amplification dan pingback abuse.
 - Prioritas rendah/hardening: lengkapi security headers (F-001), kurangi version/backend disclosure (F-002, F-005, F-006), evaluasi cipher CBC (F-008) dan kompresi pada response sensitif (F-003).
 
@@ -155,20 +160,24 @@ Tidak ada kerentanan yang dibuktikan dapat dieksploitasi, karena pengujian dibat
 
 ## 13. Rekomendasi Mitigasi
 
-1. **Patch management (F-006):** update WordPress core ke versi didukung, update Divi dan seluruh plugin, blok/hapus akses `readme.html`, minimalkan version disclosure (meta generator, `?ver=`).
-2. **XML-RPC (F-007):** nonaktifkan jika tidak dipakai atau batasi method `pingback`; terapkan rate limiting dan monitoring pada endpoint autentikasi.
-3. **Security headers (F-001):** tambahkan `Content-Security-Policy`, `X-Frame-Options`/`frame-ancestors`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` secara konsisten lintas endpoint.
-4. **Disclosure (F-002, F-005):** custom error page tanpa versi backend; minimalkan banner/header yang tidak perlu.
-5. **TLS hardening (F-003, F-008):** evaluasi kebutuhan kompresi pada response yang memuat secret; prioritaskan cipher AEAD dan pertimbangkan menonaktifkan cipher CBC lama bila kompatibilitas klien memungkinkan.
-6. **Organisasi (F-010):** inventarisasi dan isolasi virtual host yang berbagi IP; koordinasi hardening dengan pengelola infrastruktur ITK.
-7. **Pertahankan kontrol positif:** WAF, HSTS, TLS modern, blocking user enumeration.
+1. **Eksposur file anggota (F-012):** nonaktifkan directory listing pada `uploads`, batasi akses langsung ke `wp-content/uploads/ultimatemember/` (mis. `.htaccess deny` atau serve via handler ber-otorisasi), gunakan nama file acak non-enumerable, dan pertimbangkan menyimpan file anggota di luar webroot. Tinjau setting privasi Ultimate Member.
+2. **Directory listing (F-011):** matikan autoindex (`Options -Indexes` di Apache / `autoindex off`), atau tambahkan index file kosong; blok listing pada `wp-content/uploads` dan `wp-content/plugins`.
+3. **Patch management (F-006, F-013):** update WordPress core ke versi didukung, update Divi dan seluruh plugin (WPForms, Elementor, WP Statistics, WP Visitor Statistics), aktifkan auto-update, hapus plugin tak terpakai, blok/hapus akses `readme.html`, minimalkan version disclosure (meta generator, `?ver=`).
+4. **XML-RPC (F-007):** nonaktifkan jika tidak dipakai atau batasi method `pingback`; terapkan rate limiting dan monitoring pada endpoint autentikasi.
+5. **Security headers (F-001):** tambahkan `Content-Security-Policy`, `X-Frame-Options`/`frame-ancestors`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` secara konsisten lintas endpoint.
+6. **Disclosure (F-002, F-005):** custom error page tanpa versi backend; minimalkan banner/header yang tidak perlu.
+7. **TLS hardening (F-003, F-008):** evaluasi kebutuhan kompresi pada response yang memuat secret; prioritaskan cipher AEAD dan pertimbangkan menonaktifkan cipher CBC lama bila kompatibilitas klien memungkinkan.
+8. **Organisasi (F-010):** inventarisasi dan isolasi virtual host yang berbagi IP; koordinasi hardening dengan pengelola infrastruktur ITK.
+9. **Pertahankan kontrol positif:** WAF, HSTS, TLS modern, blocking user enumeration.
 
 ## 14. Kendala Dan Batasan
 
 - crt.sh tidak dapat diakses (`502` berulang); diatasi dengan certspotter, namun free tier membatasi hasil sehingga daftar subdomain tidak lengkap.
 - Nikto tidak dapat menyelesaikan scan (~10%) karena WAF memblok pola request; didokumentasikan sebagai temuan (F-009), bukan dipaksakan.
 - Shodan CLI tidak memiliki query/scan credits, sehingga evidence Shodan via CLI tidak tersedia.
-- Korelasi versi plugin/theme ke CVE spesifik belum dituntaskan (perlu lookup pasif WPScan/CVE).
+- Korelasi versi plugin ke CVE dilakukan secara pasif (lookup Wordfence/WPScan/NVD); konfirmasi pasti tiap CVE memerlukan pengujian terotorisasi (mis. WPScan API token) yang di luar batas non-destruktif sesi ini.
+- Versi plugin Ultimate Member tidak terbaca (readme HTTP 404), sehingga korelasi CVE spesifik untuk plugin tersebut tidak diklaim; temuan F-012 berbasis bukti directory listing/enumerasi, bukan versi.
+- Untuk melindungi PII, eksposur file anggota (F-012) hanya diverifikasi melalui status HTTP dan tipe file; tidak ada file gambar/dokumen yang diunduh atau dibuka.
 - Seluruh batasan menjaga aktivitas tetap non-destruktif dan dalam scope UAS.
 
 ## 15. Rencana Lanjutan

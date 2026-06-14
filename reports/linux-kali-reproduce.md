@@ -100,3 +100,43 @@ wafw00f https://perpustakaan.itk.ac.id/
 ```
 
 Catatan: di Kali, `testssl.sh`, `wafw00f`, `whatweb`, `wpscan`, `nikto`, `subfinder`, dan `amass` umumnya sudah terpasang atau tersedia via `apt`. Jalankan dengan rate wajar dan hanya pada target resmi.
+
+## 6. Google Dorking Pasif + Verifikasi (Linux/Kali)
+
+Dorking via mesin pencari (operator sama seperti versi Windows). Untuk otomasi di Kali bisa pakai `googler`/`go-dork`/manual browser:
+
+```text
+site:perpustakaan.itk.ac.id intitle:"index of"
+site:perpustakaan.itk.ac.id (filetype:sql OR filetype:bak OR filetype:log OR filetype:env OR filetype:txt OR filetype:zip)
+site:perpustakaan.itk.ac.id (filetype:pdf OR filetype:xls OR filetype:csv OR filetype:doc)
+```
+
+Verifikasi directory listing (F-011) dan versi plugin (F-013):
+
+```bash
+base="https://perpustakaan.itk.ac.id"
+for p in "/wp-content/uploads/" "/wp-content/plugins/wp-stats-manager/includes/"; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 "$base$p")
+  curl -s --max-time 25 "$base$p" | grep -qi "index of" && l="INDEX-OF" || l="no-listing"
+  echo "HTTP $code $p -> $l"; sleep 3
+done
+
+for pl in wpforms-lite elementor wp-statistics wp-stats-manager; do
+  echo -n "$pl: "; curl -s --max-time 25 "$base/wp-content/plugins/$pl/readme.txt" | grep -m1 "Stable tag:"
+  sleep 3
+done
+```
+
+Eksposur file anggota Ultimate Member (F-012) - cek status HTTP saja, JANGAN unduh isi (PII):
+
+```bash
+base="https://perpustakaan.itk.ac.id"
+for id in $(seq 1 8); do
+  code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "$base/wp-content/uploads/ultimatemember/$id/")
+  echo "user_id $id: HTTP $code"; sleep 3
+done
+```
+
+Opsional (terotorisasi, di luar sesi non-destruktif ini): `wpscan --url https://perpustakaan.itk.ac.id/ --enumerate vp,vt --api-token <TOKEN>` untuk korelasi CVE plugin/theme lebih dalam. JANGAN gunakan `--passwords`/brute force.
+
+Catatan etika: dorking hanya membaca indeks publik; verifikasi dibatasi GET tunggal dan pengecekan status/ekstensi; tidak ada file PII yang diunduh, tidak ada eksploitasi.

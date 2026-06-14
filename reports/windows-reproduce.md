@@ -169,3 +169,51 @@ docker run --rm ghcr.io/sullo/nikto -h https://perpustakaan.itk.ac.id/ -ssl -max
 ```
 
 Catatan: Nikto tetap berhenti ~10% karena WAF memblok pola request (bukan masalah tuning). Tidak dipaksakan lebih jauh agar tidak masuk area agresif/bypass WAF.
+
+## 8. Google Dorking Pasif + Verifikasi Non-Destruktif (Windows)
+
+Dorking dilakukan via mesin pencari (tidak menyentuh server target). Bisa langsung di browser Google atau via tool search. Operator yang dipakai:
+
+```text
+site:perpustakaan.itk.ac.id
+site:perpustakaan.itk.ac.id intitle:"index of"
+site:perpustakaan.itk.ac.id (filetype:sql OR filetype:bak OR filetype:log OR filetype:env OR filetype:conf OR filetype:txt OR filetype:old OR filetype:zip)
+site:perpustakaan.itk.ac.id (filetype:xls OR filetype:xlsx OR filetype:csv OR filetype:doc OR filetype:docx OR filetype:pdf)
+```
+
+Verifikasi temuan directory listing (F-011) dengan GET tunggal:
+
+```powershell
+$base = "https://perpustakaan.itk.ac.id"
+foreach ($p in @("/wp-content/uploads/","/wp-content/plugins/wp-stats-manager/includes/")) {
+  $code = curl.exe -s --max-time 25 -o NUL -w "%{http_code}" "$base$p"
+  $body = curl.exe -s --max-time 25 "$base$p"
+  $listing = if ($body -match '(?i)Index of') { "INDEX-OF" } else { "no-listing" }
+  Write-Output ("HTTP {0} {1} -> {2}" -f $code, $p, $listing)
+  Start-Sleep -Seconds 3
+}
+```
+
+Enumerasi versi plugin via readme (F-013):
+
+```powershell
+$base = "https://perpustakaan.itk.ac.id"
+foreach ($pl in @("wpforms-lite","elementor","wp-statistics","wp-stats-manager")) {
+  $body = curl.exe -s --max-time 25 "$base/wp-content/plugins/$pl/readme.txt"
+  ($body -split "`n" | Select-String 'Stable tag:') -join " | "
+  Start-Sleep -Seconds 3
+}
+```
+
+Eksposur file anggota Ultimate Member (F-012) - HANYA cek status HTTP dan tipe file, JANGAN unduh isi (PII):
+
+```powershell
+$base = "https://perpustakaan.itk.ac.id"
+foreach ($id in 1..8) {
+  $code = curl.exe -s --max-time 20 -o NUL -w "%{http_code}" "$base/wp-content/uploads/ultimatemember/$id/"
+  Write-Output ("user_id {0}: HTTP {1}" -f $id, $code)
+  Start-Sleep -Seconds 3
+}
+```
+
+Catatan etika: dorking hanya membaca indeks publik search engine. Verifikasi dibatasi GET tunggal dan pengecekan status/ekstensi; tidak ada file PII yang diunduh, tidak ada eksploitasi.
