@@ -4,7 +4,10 @@
 
 - Mata kuliah: Keamanan Siber.
 - Bentuk UAS: project kelompok identifikasi kerentanan website.
-- Target resmi: `https://perpustakaan.itk.ac.id/`.
+- Target resmi (AKTIF, per arahan dosen 2026-05-20 di grup NetSec-DAR): `https://dev-itkpress.itk.ac.id/home`.
+  - Instruksi dosen: "Target baru pengujian ke sini aja ya, jika down segera info spya sy laporkan".
+  - CATATAN PENTING: ini environment `dev` yang rapuh (dosen sadar bisa down). Wajib EKSTRA konservatif: recon pasif dulu, rate sangat rendah, hindari scan agresif/Nikto di awal. Jika target down, JANGAN lanjutkan pengujian dan segera info ke user untuk dilaporkan ke dosen.
+- Target lama (ARSIP, sudah dikerjakan F-001..F-013): `https://perpustakaan.itk.ac.id/`. Hasilnya tetap disimpan sebagai referensi metodologi; tidak dihapus.
 - Aktivitas ini memiliki izin akademik, tetapi wajib tetap mengikuti batasan instruksi UAS.
 - User mengerjakan dari Windows dengan terminal default PowerShell 7, bukan Kali Linux, kecuali nanti benar-benar diperlukan.
 - Pengerjaan dilakukan bertahap untuk asistensi mingguan, bukan sekali selesai.
