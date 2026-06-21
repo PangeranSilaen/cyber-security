@@ -1,0 +1,70 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - link [ref=e10] [cursor=pointer]:
+        - /url: "\t\t\t\t\t\thttps://dev-itkpress.itk.ac.id/home/index\n\t\t\t\t\t"
+        - img [ref=e11]
+      - navigation "Site Navigation" [ref=e12]:
+        - generic [ref=e14]:
+          - list [ref=e15]:
+            - listitem [ref=e16]
+            - listitem [ref=e18]
+            - listitem [ref=e20]
+            - listitem [ref=e22]
+          - link "Search" [ref=e25] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/search
+            - generic [ref=e26]: 
+            - text: Search
+        - list [ref=e28]:
+          - listitem [ref=e29]:
+            - link "Register" [ref=e30] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/user/register
+          - listitem [ref=e31]:
+            - link "Login" [ref=e32] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/login
+  - main [ref=e34]:
+    - generic [ref=e35]:
+      - navigation "You are here:" [ref=e36]:
+        - list [ref=e37]:
+          - listitem [ref=e38]:
+            - link "Home" [ref=e39] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/index
+            - text: /
+          - listitem [ref=e40]: Login
+      - heading "Login" [level=1] [ref=e41]
+      - group "Login" [ref=e43]:
+        - generic [ref=e44]: Login
+        - generic [ref=e46] [cursor=pointer]:
+          - generic [ref=e47]:
+            - text: Username *
+            - generic [ref=e48]: Required
+          - textbox "Username Required" [ref=e49]
+        - generic [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]:
+            - text: Password *
+            - generic [ref=e53]: Required
+          - textbox "Password Required Forgot your password?" [ref=e54]
+          - link "Forgot your password?" [ref=e55]:
+            - /url: https://dev-itkpress.itk.ac.id/home/login/lostPassword
+        - generic [ref=e57] [cursor=pointer]:
+          - checkbox "Keep me logged in" [checked] [ref=e58]
+          - text: Keep me logged in
+        - generic [ref=e59]:
+          - button "Login" [ref=e60]
+          - link "Register" [ref=e61] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/user/register?source=
+  - contentinfo [ref=e62]:
+    - generic [ref=e63]:
+      - paragraph [ref=e65]:
+        - strong [ref=e66]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e67]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e68] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e69]

@@ -1,0 +1,157 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to announcements" [ref=e6] [cursor=pointer]:
+        - /url: "#homepageAnnouncements"
+      - link "Skip to site footer" [ref=e7] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - heading "ITK Press" [level=1] [ref=e10]
+        - link [ref=e12] [cursor=pointer]:
+          - /url: "\t\t\t\t\t\thttps://dev-itkpress.itk.ac.id/home/index\n\t\t\t\t\t"
+          - img [ref=e13]
+      - navigation "Site Navigation" [ref=e14]:
+        - generic [ref=e16]:
+          - list [ref=e17]:
+            - listitem [ref=e18]
+            - listitem [ref=e20]
+            - listitem [ref=e22]
+            - listitem [ref=e24]
+          - link "Search" [ref=e27] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/search
+            - generic [ref=e28]: 
+            - text: Search
+        - list [ref=e30]:
+          - listitem [ref=e31]:
+            - link "Register" [ref=e32] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/user/register
+          - listitem [ref=e33]:
+            - link "Login" [ref=e34] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/login
+  - main [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - heading "Featured" [level=2] [ref=e39]
+        - generic [ref=e41]:
+          - link [ref=e42] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/92
+          - heading "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [level=3] [ref=e43]:
+            - link "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [ref=e44] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/92
+          - generic [ref=e45]: ITK Press
+          - generic [ref=e46]: November 12, 2025
+      - generic [ref=e47]:
+        - heading "New Releases" [level=2] [ref=e48]
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - link [ref=e51] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/92
+            - heading "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [level=3] [ref=e52]
+            - generic [ref=e54]: ITK Press
+            - generic [ref=e55]: November 12, 2025
+          - generic [ref=e56]:
+            - link [ref=e57] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/55
+            - 'heading "MENGARUNGI GELOMBANG PERUBAHAN: FIBERGLASS SEBAGAI BAHAN KAPAL YANG BERKELANJUTAN" [level=3] [ref=e58]'
+            - generic [ref=e60]: Himawan Wicakson, Alamsyah
+            - generic [ref=e61]: August 17, 2024
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - link [ref=e64] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/50
+            - heading "PERENCANAAN STRUKTUR BAJA" [level=3] [ref=e65]
+            - generic [ref=e67]: Andina Prima Putri
+            - generic [ref=e68]: December 10, 2023
+          - generic [ref=e69]:
+            - link [ref=e70] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/49
+            - heading "FOOD QUALITY DEFINES YOUR OWN QUALITY" [level=3] [ref=e71]
+            - generic [ref=e73]: Yoyok Budi Pramono, Setya Budi Muhammad Abduh, Jefri Pandu Hidayat, Clarisa Gunawan
+            - generic [ref=e74]: September 1, 2023
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - link [ref=e77] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/43
+            - heading "Buku Ajar Komputasi Awan" [level=3] [ref=e78]
+            - generic [ref=e80]: Aidil Saputra Kirsan
+            - generic [ref=e81]: May 10, 2023
+          - generic [ref=e82]:
+            - link [ref=e83] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/41
+            - heading "RESEARCH METHODS:TIPS AND TRICKS FOR WRITING GOOD ARTICLES" [level=3] [ref=e84]
+            - generic [ref=e86]: Iswanto
+            - generic [ref=e87]: April 18, 2023
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - link [ref=e90] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/37
+            - 'heading "Etika Profesi Engineering: Profesi Elit Etika Sulit" [level=3] [ref=e91]'
+            - generic [ref=e93]: Vicky Andria Kusuma, Sena Sukmananda Suprapto, Wahyu Abdillah, Yosefiana Aba Wowoseko
+            - generic [ref=e94]: March 19, 2023
+          - generic [ref=e95]:
+            - link [ref=e96] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/38
+            - 'heading "Aljabar Linear Elementer : Edisi Pertama Jilid 1" [level=3] [ref=e97]'
+            - generic [ref=e99]: Mohammad Januar Ismail Burhan, Winarni
+            - generic [ref=e100]: March 19, 2023
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - link [ref=e103] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/39
+            - heading "Buku Ajar Gambar Teknik" [level=3] [ref=e104]
+            - generic [ref=e106]: Mochamad Sulaiman, Muhamad Imron Zamzani, Faishal Arham Pratikno
+            - generic [ref=e107]: March 19, 2023
+          - generic [ref=e108]:
+            - link [ref=e109] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/7
+            - heading "Buku Ajar Teknologi Pengolahan Pangan" [level=3] [ref=e110]
+            - generic [ref=e112]: Ni'matus Sholihah
+            - generic [ref=e113]: October 28, 2022
+        - generic [ref=e115]:
+          - link [ref=e116] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/1
+          - 'heading "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [level=3] [ref=e117]':
+            - 'link "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [ref=e118] [cursor=pointer]':
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/1
+          - generic [ref=e119]: Tim ITK Press
+          - generic [ref=e120]: October 24, 2022
+      - generic [ref=e121]:
+        - heading "Announcements" [level=2] [ref=e122]
+        - article [ref=e123]:
+          - heading "CALL FOR SCRIPT BATCH#6" [level=3] [ref=e124]:
+            - link "CALL FOR SCRIPT BATCH#6" [ref=e125] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/announcement/view/12
+          - generic [ref=e126]:  2023-05-05
+          - generic [ref=e127]:
+            - paragraph [ref=e128]
+            - link "Read more about CALL FOR SCRIPT BATCH#6 " [ref=e130] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/announcement/view/12
+      - generic [ref=e133]:
+        - paragraph [ref=e134]:
+          - text: Selamat datang di sistem layanan penerbitan
+          - emphasis [ref=e135]: online
+          - strong [ref=e136]: Penerbit ITK Press.
+        - paragraph [ref=e137]:
+          - strong [ref=e138]: Penerbit ITK Press
+          - text: mengundang penulis potensial dari dalam kampus ITK dan luar ITK untuk menerbitkan naskah buku hasil penelitian atau karya ilmu pengetahuan. Penulis dapat mengirimkan karyanya melalui halaman
+          - link "REGISTER" [ref=e139] [cursor=pointer]:
+            - /url: https://itkpress.itk.ac.id/index.php/home/user/register
+            - strong [ref=e140]: REGISTER
+          - text: atau
+          - link "LOGIN" [ref=e141] [cursor=pointer]:
+            - /url: https://itkpress.itk.ac.id/index.php/home/login
+            - strong [ref=e142]: LOGIN
+          - text: .
+  - contentinfo [ref=e143]:
+    - generic [ref=e144]:
+      - paragraph [ref=e146]:
+        - strong [ref=e147]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e148]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e149] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e150]

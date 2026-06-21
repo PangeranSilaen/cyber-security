@@ -1,0 +1,61 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "ITK Press" [ref=e4] [cursor=pointer]:
+      - /url: https://dev-itkpress.itk.ac.id/home/index
+    - generic [ref=e5]:
+      - button "Tasks" [ref=e7] [cursor=pointer]:
+        - generic [ref=e8]: 
+        - generic [ref=e9]: Tasks
+      - button "heavenlydemon" [ref=e11] [cursor=pointer]:
+        - generic [ref=e12]: 
+        - generic [ref=e13]: heavenlydemon
+  - navigation "Site Navigation" [ref=e14]:
+    - link "⟵ Back to Submissions" [ref=e15] [cursor=pointer]:
+      - /url: https://dev-itkpress.itk.ac.id/home/submissions
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - heading "Profile" [level=1] [ref=e19]
+      - generic [ref=e20]:
+        - tablist [ref=e21]:
+          - tab "Identity" [expanded] [selected] [ref=e22]:
+            - link "Identity" [ref=e23]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/identity
+          - tab "Contact" [ref=e24]:
+            - link "Contact" [ref=e25] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/contact
+          - tab "Roles" [ref=e26]:
+            - link "Roles" [ref=e27] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/roles
+          - tab "Public" [ref=e28]:
+            - link "Public" [ref=e29] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/public-profile
+          - tab "Password" [ref=e30]:
+            - link "Password" [ref=e31] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/change-password
+          - tab "Notifications" [ref=e32]:
+            - link "Notifications" [ref=e33] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/notification-settings
+          - tab "API Key" [ref=e34]:
+            - link "API Key" [ref=e35] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/$$$call$$$/tab/user/profile-tab/api-profile
+        - tabpanel "Identity" [ref=e36]:
+          - generic [ref=e37]:
+            - button "Help" [ref=e38]:
+              - generic [ref=e39]: 
+              - text: Help
+            - group [ref=e40]:
+              - generic [ref=e41]
+            - group [ref=e43]:
+              - generic [ref=e44]
+            - generic [ref=e54]:
+              - generic [ref=e55] [cursor=pointer]: How do you prefer to be addressed? Salutations, middle names and suffixes can be added here if you would like.
+              - generic [ref=e56]
+            - paragraph [ref=e60]:
+              - text: Your data is stored in accordance with our
+              - link "privacy statement" [ref=e61] [cursor=pointer]:
+                - /url: https://dev-itkpress.itk.ac.id/home/about/privacy
+              - text: .
+            - paragraph [ref=e62]:
+              - generic [ref=e63]: "* Denotes required field"
+            - button "Save" [ref=e66] [cursor=pointer]
+  - status

@@ -1,0 +1,33 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - heading "ITK Press" [level=1] [ref=e9]
+        - link "ITK Press" [ref=e11] [cursor=pointer]:
+          - /url: "\t\t\t\t\t\thttp://localhost:8080/home/index\n\t\t\t\t\t"
+      - navigation "Site Navigation" [ref=e12]:
+        - generic [ref=e14]:
+          - list [ref=e15]:
+            - listitem [ref=e16]
+            - listitem [ref=e18]
+          - link "Search" [ref=e21] [cursor=pointer]:
+            - /url: http://localhost:8080/home/search
+            - generic [ref=e22]: 
+            - text: Search
+        - list [ref=e24]:
+          - listitem [ref=e25]:
+            - link "admin 0" [ref=e26] [cursor=pointer]:
+              - /url: "#"
+  - main [ref=e29]
+  - contentinfo [ref=e30]:
+    - complementary [ref=e32]:
+      - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e33] [cursor=pointer]:
+        - /url: http://localhost:8080/home/about/aboutThisPublishingSystem
+        - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e34]

@@ -1,0 +1,214 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - link [ref=e10] [cursor=pointer]:
+        - /url: "\t\t\t\t\t\thttps://dev-itkpress.itk.ac.id/home/index\n\t\t\t\t\t"
+        - img [ref=e11]
+      - navigation "Site Navigation" [ref=e12]:
+        - generic [ref=e14]:
+          - list [ref=e15]:
+            - listitem [ref=e16]
+            - listitem [ref=e18]
+            - listitem [ref=e20]
+            - listitem [ref=e22]
+          - link "Search" [ref=e25] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/search
+            - generic [ref=e26]: 
+            - text: Search
+        - list [ref=e28]:
+          - listitem [ref=e29]:
+            - link "heavenlydemon 0" [ref=e30] [cursor=pointer]:
+              - /url: "#"
+  - main [ref=e33]:
+    - generic [ref=e34]:
+      - navigation "You are here:" [ref=e35]:
+        - list [ref=e36]:
+          - listitem [ref=e37]:
+            - link "Home" [ref=e38] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/index
+            - text: /
+          - listitem [ref=e39]: Catalog
+      - heading "Catalog" [level=1] [ref=e40]
+      - generic [ref=e41]: 98 Titles
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - link [ref=e45] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/1
+            - 'heading "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [level=2] [ref=e46]'
+            - generic [ref=e48]: Tim ITK Press
+            - generic [ref=e49]: October 24, 2022
+          - generic [ref=e50]:
+            - link [ref=e51] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/92
+            - heading "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [level=2] [ref=e52]
+            - generic [ref=e54]: ITK Press
+            - generic [ref=e55]: November 12, 2025
+          - generic [ref=e56]:
+            - link [ref=e57] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/6
+            - heading "CARA EZ BELAJAR ETAP" [level=2] [ref=e58]
+            - generic [ref=e60]: Vicky Andria Kusuma, Dandy Saputra, Andhika Rufty Pratiwi
+            - generic [ref=e61]: October 28, 2022
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - link [ref=e64] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/4
+            - 'heading "KALKULUS 2: SUATU SENI UNTUK MENSYUKURI NIKMAT TUHAN" [level=2] [ref=e65]'
+            - generic [ref=e67]: Sigit Pancahayani, Kartika Nugraheni, Nashrul Millah, Irma Fitria
+            - generic [ref=e68]: October 28, 2022
+          - generic [ref=e69]:
+            - link [ref=e70] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/7
+            - heading "Buku Ajar Teknologi Pengolahan Pangan" [level=2] [ref=e71]
+            - generic [ref=e73]: Ni'matus Sholihah
+            - generic [ref=e74]: October 28, 2022
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - link [ref=e77] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/5
+            - heading "Monograf Penerapan Metode Waterfall pada Pembangunan Sistem Gaji Berbasis Website" [level=2] [ref=e78]
+            - generic [ref=e80]: M. Ihsan Alfani Putera
+            - generic [ref=e81]: October 28, 2022
+          - generic [ref=e82]:
+            - link [ref=e83] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/3
+            - 'heading "Human Factors Engineering : Case-based Learning" [level=2] [ref=e84]'
+            - generic [ref=e86]: admin admin; Noni Oktiana Setiowati
+            - generic [ref=e87]: October 28, 2022
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - link [ref=e90] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/12
+            - heading "MONOGRAF KARAKTER INKLUSIVITAS DAN POTENSI BRANDING PADA RUANG PUBLIK DI KOTA BALIKPAPA" [level=2] [ref=e91]
+            - generic [ref=e93]: Mega Ulimaz, Muhammad Ma’arij Harfadli
+            - generic [ref=e94]: November 1, 2022
+          - generic [ref=e95]:
+            - link [ref=e96] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/10
+            - heading "Kinematika Mekanisme" [level=2] [ref=e97]
+            - generic [ref=e99]: Alfian Djafar
+            - generic [ref=e100]: November 1, 2022
+        - generic [ref=e101]:
+          - generic [ref=e102]:
+            - link [ref=e103] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/8
+            - heading "Buku Ajar Pengantar Mekanika Analitik" [level=2] [ref=e104]
+            - generic [ref=e106]: Fadli Robiandi
+            - generic [ref=e107]: November 1, 2022
+          - generic [ref=e108]:
+            - link [ref=e109] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/11
+            - heading "Matematika Memang Mudah (M3)" [level=2] [ref=e110]
+            - generic [ref=e112]: Jefri Pandu Hidayat
+            - generic [ref=e113]: November 1, 2022
+        - generic [ref=e114]:
+          - generic [ref=e115]:
+            - link [ref=e116] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/9
+            - heading "Elemen Mesin" [level=2] [ref=e117]
+            - generic [ref=e119]: Andre Amba Matarru
+            - generic [ref=e120]: November 1, 2022
+          - generic [ref=e121]:
+            - link [ref=e122] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/13
+            - 'heading "Buku Ajar : PENILAIAN RISIKO BENCANA BERBASIS MASYARAKAT : SERI : BENCANA BANJIR" [level=2] [ref=e123]'
+            - generic [ref=e125]: Rahmat Aris Pratomo
+            - generic [ref=e126]: December 7, 2022
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - link [ref=e129] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/15
+            - heading "Humas Digital" [level=2] [ref=e130]
+            - generic [ref=e132]: Sadhriany Pertiwi Saleh
+            - generic [ref=e133]: December 15, 2022
+          - generic [ref=e134]:
+            - link [ref=e135] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/16
+            - 'heading "Human Relation: Dalam Organisasi" [level=2] [ref=e136]'
+            - generic [ref=e138]: Sadhriany Pertiwi Saleh
+            - generic [ref=e139]: December 15, 2022
+        - generic [ref=e140]:
+          - generic [ref=e141]:
+            - link [ref=e142] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/14
+            - 'heading "Ragam Kajian Layanan Bimbingan dan Konseling di Masyarakat: (Bunga Rampai Hasil Kajian Penelitian dan Pengabdian Tentang Bimbingan dan Konseling di Masyarakat)" [level=2] [ref=e143]'
+            - generic [ref=e145]: Sutirna, Dadang Rahman Munandar, Kelik Wachyudi
+            - generic [ref=e146]: December 15, 2022
+          - generic [ref=e147]:
+            - link [ref=e148] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/21
+            - heading "DINAMIKA MEDIA PEMBELAJARAN SELAMA PANDEMI COVID-19" [level=2] [ref=e149]
+            - generic [ref=e151]: Fairusy Fitria Haryani, Sukarmin, Daru Wahyuningsih, Supurwoko
+            - generic [ref=e152]: December 16, 2022
+        - generic [ref=e153]:
+          - generic [ref=e154]:
+            - link [ref=e155] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/19
+            - heading "PENGANTAR ILMU KOMUNIKASI (KOMUNIKASI ORGANISASI)" [level=2] [ref=e156]
+            - generic [ref=e158]: Sadhriany Pertiwi Saleh
+            - generic [ref=e159]: December 16, 2022
+          - generic [ref=e160]:
+            - link [ref=e161] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/17
+            - heading "KAJIAN DASAR ADSORPSI DAN DIFUSI PADA MEDIA BERPORI" [level=2] [ref=e162]
+            - generic [ref=e164]: Lusi Ernawati
+            - generic [ref=e165]: December 16, 2022
+        - generic [ref=e166]:
+          - generic [ref=e167]:
+            - link [ref=e168] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/22
+            - 'heading "Pertumbuhan, Ketimpangan dan Kemiskinan : Kebijakan Pro-Poor Pemerintah untuk Penduduk Miskin" [level=2] [ref=e169]'
+            - generic [ref=e171]: Azwardi, Alghifari Mahdi Igamo, Nugraha Pukuh, Hayu Fadlun Widyastika
+            - generic [ref=e172]: December 16, 2022
+          - generic [ref=e173]:
+            - link [ref=e174] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/20
+            - heading "EKONOMI SUMBERDAYA ALAM DAN LINGKUNGAN" [level=2] [ref=e175]
+            - generic [ref=e177]: Azwardi
+            - generic [ref=e178]: December 16, 2022
+        - generic [ref=e179]:
+          - generic [ref=e180]:
+            - link [ref=e181] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/18
+            - heading "TANTANGAN BUDAYA LOKAL DI INDONESIA" [level=2] [ref=e182]
+            - generic [ref=e184]: M. Ikhsan Tanggok
+            - generic [ref=e185]: December 16, 2022
+          - generic [ref=e186]:
+            - link [ref=e187] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/23
+            - heading "Pengelolaan Limbah B3 di Indonesia" [level=2] [ref=e188]
+            - generic [ref=e190]: Intan Dwi Wahyu Setyo Rini, Cut Keumala Banaget, Qorry Nugrahayu
+            - generic [ref=e191]: January 12, 2023
+        - generic [ref=e192]:
+          - generic [ref=e193]:
+            - link [ref=e194] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/24
+            - heading "Mekanika Bahan Mechanics of Material" [level=2] [ref=e195]
+            - generic [ref=e197]: Made Sukraw
+            - generic [ref=e198]: January 13, 2023
+          - generic [ref=e199]:
+            - link [ref=e200] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog/book/25
+            - heading "Bahasa, Sastra, dan Kebudayaan dalam Kebinekaan" [level=2] [ref=e201]
+            - generic [ref=e203]: Lalu Erwan Husnan … [et al.]
+            - generic [ref=e204]: January 17, 2023
+      - generic "View additional pages" [ref=e205]:
+        - text: 1-25 of 98
+        - link "Next " [ref=e206] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/catalog/page/2
+  - contentinfo [ref=e207]:
+    - generic [ref=e208]:
+      - paragraph [ref=e210]:
+        - strong [ref=e211]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e212]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e213] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e214]

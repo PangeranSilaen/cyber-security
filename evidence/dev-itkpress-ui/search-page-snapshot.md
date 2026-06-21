@@ -1,0 +1,53 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - link [ref=e10] [cursor=pointer]:
+        - /url: "\t\t\t\t\t\thttps://dev-itkpress.itk.ac.id/home/index\n\t\t\t\t\t"
+        - img [ref=e11]
+      - navigation "Site Navigation" [ref=e12]:
+        - list [ref=e15]:
+          - listitem [ref=e16]:
+            - link "Book" [ref=e17] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/catalog
+          - listitem [ref=e18]:
+            - link "Announcements" [ref=e19] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/announcement
+          - listitem [ref=e20]:
+            - link "About" [ref=e21] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e22]:
+            - link "Journals" [ref=e23] [cursor=pointer]:
+              - /url: https://journal.itk.ac.id/
+        - list [ref=e25]:
+          - listitem [ref=e26]:
+            - link "heavenlydemon 0" [ref=e27] [cursor=pointer]:
+              - /url: "#"
+  - main [ref=e30]:
+    - generic [ref=e31]:
+      - navigation "You are here:" [ref=e32]:
+        - list [ref=e33]:
+          - listitem [ref=e34]:
+            - link "Home" [ref=e35] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/index
+            - text: /
+          - listitem [ref=e36]: Search
+      - heading "Search" [level=1] [ref=e37]
+      - generic [ref=e38]: 0 Titles
+      - search "Book Search" [ref=e39]:
+        - searchbox "Search Query" [ref=e40]
+        - button "Search" [ref=e41]
+  - contentinfo [ref=e42]:
+    - generic [ref=e43]:
+      - paragraph [ref=e45]:
+        - strong [ref=e46]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e47]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e48] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e49]

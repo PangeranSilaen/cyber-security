@@ -1,0 +1,157 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to announcements" [ref=e6] [cursor=pointer]:
+        - /url: "#homepageAnnouncements"
+      - link "Skip to site footer" [ref=e7] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - heading "ITK Press" [level=1] [ref=e10]
+        - link [ref=e12] [cursor=pointer]:
+          - /url: "\t\t\t\t\t\thttp://localhost:8080/home/index\n\t\t\t\t\t"
+          - img [ref=e13]
+      - navigation "Site Navigation" [ref=e14]:
+        - generic [ref=e16]:
+          - list [ref=e17]:
+            - listitem [ref=e18]
+            - listitem [ref=e20]
+            - listitem [ref=e22]
+            - listitem [ref=e24]
+          - link "Search" [ref=e27] [cursor=pointer]:
+            - /url: http://localhost:8080/home/search
+            - generic [ref=e28]: 
+            - text: Search
+        - list [ref=e30]:
+          - listitem [ref=e31]:
+            - link "Register" [ref=e32] [cursor=pointer]:
+              - /url: http://localhost:8080/home/user/register
+          - listitem [ref=e33]:
+            - link "Login" [ref=e34] [cursor=pointer]:
+              - /url: http://localhost:8080/home/login
+  - main [ref=e36]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - heading "Featured" [level=2] [ref=e39]
+        - generic [ref=e41]:
+          - link:
+            - /url: http://localhost:8080/home/catalog/book/92
+          - heading "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [level=3] [ref=e42]:
+            - link "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [ref=e43] [cursor=pointer]:
+              - /url: http://localhost:8080/home/catalog/book/92
+          - generic [ref=e44]: ITK Press
+          - generic [ref=e45]: November 12, 2025
+      - generic [ref=e46]:
+        - heading "New Releases" [level=2] [ref=e47]
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/92
+            - heading "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [level=3] [ref=e50]
+            - generic [ref=e52]: ITK Press
+            - generic [ref=e53]: November 12, 2025
+          - generic [ref=e54]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/55
+            - 'heading "MENGARUNGI GELOMBANG PERUBAHAN: FIBERGLASS SEBAGAI BAHAN KAPAL YANG BERKELANJUTAN" [level=3] [ref=e55]'
+            - generic [ref=e57]: Himawan Wicakson, Alamsyah
+            - generic [ref=e58]: August 17, 2024
+        - generic [ref=e59]:
+          - generic [ref=e60]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/50
+            - heading "PERENCANAAN STRUKTUR BAJA" [level=3] [ref=e61]
+            - generic [ref=e63]: Andina Prima Putri
+            - generic [ref=e64]: December 10, 2023
+          - generic [ref=e65]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/49
+            - heading "FOOD QUALITY DEFINES YOUR OWN QUALITY" [level=3] [ref=e66]
+            - generic [ref=e68]: Yoyok Budi Pramono, Setya Budi Muhammad Abduh, Jefri Pandu Hidayat, Clarisa Gunawan
+            - generic [ref=e69]: September 1, 2023
+        - generic [ref=e70]:
+          - generic [ref=e71]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/43
+            - heading "Buku Ajar Komputasi Awan" [level=3] [ref=e72]
+            - generic [ref=e74]: Aidil Saputra Kirsan
+            - generic [ref=e75]: May 10, 2023
+          - generic [ref=e76]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/41
+            - heading "RESEARCH METHODS:TIPS AND TRICKS FOR WRITING GOOD ARTICLES" [level=3] [ref=e77]
+            - generic [ref=e79]: Iswanto
+            - generic [ref=e80]: April 18, 2023
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/37
+            - 'heading "Etika Profesi Engineering: Profesi Elit Etika Sulit" [level=3] [ref=e83]'
+            - generic [ref=e85]: Vicky Andria Kusuma, Sena Sukmananda Suprapto, Wahyu Abdillah, Yosefiana Aba Wowoseko
+            - generic [ref=e86]: March 19, 2023
+          - generic [ref=e87]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/38
+            - 'heading "Aljabar Linear Elementer : Edisi Pertama Jilid 1" [level=3] [ref=e88]'
+            - generic [ref=e90]: Mohammad Januar Ismail Burhan, Winarni
+            - generic [ref=e91]: March 19, 2023
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/39
+            - heading "Buku Ajar Gambar Teknik" [level=3] [ref=e94]
+            - generic [ref=e96]: Mochamad Sulaiman, Muhamad Imron Zamzani, Faishal Arham Pratikno
+            - generic [ref=e97]: March 19, 2023
+          - generic [ref=e98]:
+            - link:
+              - /url: http://localhost:8080/home/catalog/book/7
+            - heading "Buku Ajar Teknologi Pengolahan Pangan" [level=3] [ref=e99]
+            - generic [ref=e101]: Ni'matus Sholihah
+            - generic [ref=e102]: October 28, 2022
+        - generic [ref=e104]:
+          - link:
+            - /url: http://localhost:8080/home/catalog/book/1
+          - 'heading "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [level=3] [ref=e105]':
+            - 'link "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [ref=e106] [cursor=pointer]':
+              - /url: http://localhost:8080/home/catalog/book/1
+          - generic [ref=e107]: Tim ITK Press
+          - generic [ref=e108]: October 24, 2022
+      - generic [ref=e109]:
+        - heading "Announcements" [level=2] [ref=e110]
+        - article [ref=e111]:
+          - heading "CALL FOR SCRIPT BATCH#6" [level=3] [ref=e112]:
+            - link "CALL FOR SCRIPT BATCH#6" [ref=e113] [cursor=pointer]:
+              - /url: http://localhost:8080/home/announcement/view/12
+          - generic [ref=e114]:  2023-05-05
+          - generic [ref=e115]:
+            - paragraph [ref=e116]
+            - link "Read more about CALL FOR SCRIPT BATCH#6 " [ref=e118] [cursor=pointer]:
+              - /url: http://localhost:8080/home/announcement/view/12
+      - generic [ref=e121]:
+        - paragraph [ref=e122]:
+          - text: Selamat datang di sistem layanan penerbitan
+          - emphasis [ref=e123]: online
+          - strong [ref=e124]: Penerbit ITK Press.
+        - paragraph [ref=e125]:
+          - strong [ref=e126]: Penerbit ITK Press
+          - text: mengundang penulis potensial dari dalam kampus ITK dan luar ITK untuk menerbitkan naskah buku hasil penelitian atau karya ilmu pengetahuan. Penulis dapat mengirimkan karyanya melalui halaman
+          - link "REGISTER" [ref=e127] [cursor=pointer]:
+            - /url: http://localhost:8080/home/user/register
+            - strong [ref=e128]: REGISTER
+          - text: atau
+          - link "LOGIN" [ref=e129] [cursor=pointer]:
+            - /url: http://localhost:8080/home/login
+            - strong [ref=e130]: LOGIN
+          - text: .
+  - contentinfo [ref=e131]:
+    - generic [ref=e132]:
+      - paragraph [ref=e134]:
+        - strong [ref=e135]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e136]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e137] [cursor=pointer]:
+          - /url: http://localhost:8080/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e138]

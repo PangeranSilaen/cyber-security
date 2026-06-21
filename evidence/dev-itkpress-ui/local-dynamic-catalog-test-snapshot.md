@@ -1,0 +1,49 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - link "ITK Press" [ref=e10] [cursor=pointer]:
+        - /url: "\t\t\t\t\t\thttp://localhost:8080/home/index\n\t\t\t\t\t"
+      - navigation "Site Navigation" [ref=e11]:
+        - generic [ref=e13]:
+          - list [ref=e14]:
+            - listitem [ref=e15]
+            - listitem [ref=e17]
+          - link "Search" [ref=e20] [cursor=pointer]:
+            - /url: http://localhost:8080/home/search
+            - generic [ref=e21]: 
+            - text: Search
+        - list [ref=e23]:
+          - listitem [ref=e24]:
+            - link "admin 0" [ref=e25] [cursor=pointer]:
+              - /url: "#"
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - navigation "You are here:" [ref=e30]:
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - link "Home" [ref=e33] [cursor=pointer]:
+              - /url: http://localhost:8080/home/index
+            - text: /
+          - listitem [ref=e34]: Catalog
+      - heading "Catalog" [level=1] [ref=e35]
+      - generic [ref=e36]: 1 Titles
+      - generic [ref=e39]:
+        - link [ref=e40] [cursor=pointer]:
+          - /url: http://localhost:8080/home/catalog/book/1
+        - 'heading "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [level=2] [ref=e41]':
+          - 'link "Menyemai Ilmu Melalui Buku: Pedoman Penulisan Buku Ilmiah" [ref=e42] [cursor=pointer]':
+            - /url: http://localhost:8080/home/catalog/book/1
+        - generic [ref=e43]: Tim ITK Press
+        - generic [ref=e44]: October 24, 2022
+  - contentinfo [ref=e45]:
+    - complementary [ref=e47]:
+      - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e48] [cursor=pointer]:
+        - /url: http://localhost:8080/home/about/aboutThisPublishingSystem
+        - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e49]

@@ -1,0 +1,67 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - link [ref=e10] [cursor=pointer]:
+        - /url: "\t\t\t\t\t\thttps://dev-itkpress.itk.ac.id/home/index\n\t\t\t\t\t"
+        - img [ref=e11]
+      - navigation "Site Navigation" [ref=e12]:
+        - generic [ref=e14]:
+          - list [ref=e15]:
+            - listitem [ref=e16]
+            - listitem [ref=e18]
+            - listitem [ref=e20]
+            - listitem [ref=e22]
+          - link "Search" [ref=e25] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/search
+            - generic [ref=e26]: 
+            - text: Search
+        - list [ref=e28]:
+          - listitem [ref=e29]:
+            - link "heavenlydemon 0" [ref=e30] [cursor=pointer]:
+              - /url: "#"
+  - main [ref=e33]:
+    - generic [ref=e35]:
+      - heading "Kumpulan Abstrak Sepakat x Specta Exhibition 2025" [level=1] [ref=e36]
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - heading "Authors" [level=2] [ref=e40]
+            - generic [ref=e41]
+          - generic [ref=e44]:
+            - heading "Keywords:" [level=2] [ref=e45]
+            - text: Pertanian & Pangan Cerdas Berbasis Teknologi Hijau, Energi Terbarukan & Efisiensi Energi, Digitalisasi Layanan Publik & Pemberdayaan Masyarakat, Lingkungan & Keberlanjutan Hijau, Pendidikan & Literasi Digital Berkelanjutan
+          - generic [ref=e46]:
+            - heading "Synopsis" [level=2] [ref=e47]
+            - generic [ref=e48]
+        - generic [ref=e73]:
+          - generic [ref=e75]:
+            - heading "Downloads" [level=2] [ref=e76]
+            - link "Baca Buku " [ref=e78] [cursor=pointer]:
+              - /url: https://flipbookpdf.net/web/site/cbc511d4ecc85a20139983c44790b70d7f396d5e202511.pdf.html
+          - generic [ref=e80]:
+            - heading "Published" [level=2] [ref=e81]
+            - generic [ref=e82]: November 12, 2025
+          - generic [ref=e83]: Copyright (c) 2025 ITK Press
+          - generic [ref=e84]:
+            - heading "License" [level=2] [ref=e85]
+            - link "Creative Commons License" [ref=e86] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+            - paragraph [ref=e88]
+          - generic [ref=e90]:
+            - heading "Details about this monograph" [level=2] [ref=e91]
+            - heading "Physical Dimensions" [level=2] [ref=e93]
+  - contentinfo [ref=e94]:
+    - generic [ref=e95]:
+      - paragraph [ref=e97]:
+        - strong [ref=e98]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e99]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e100] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e101]

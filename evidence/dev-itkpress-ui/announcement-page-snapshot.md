@@ -1,0 +1,63 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic "Jump to content links":
+      - link "Skip to main content" [ref=e4] [cursor=pointer]:
+        - /url: "#pkp_content_main"
+      - link "Skip to main navigation menu" [ref=e5] [cursor=pointer]:
+        - /url: "#siteNav"
+      - link "Skip to site footer" [ref=e6] [cursor=pointer]:
+        - /url: "#pkp_content_footer"
+    - generic [ref=e7]:
+      - link [ref=e10] [cursor=pointer]:
+        - /url: "\t\t\t\t\t\thttps://dev-itkpress.itk.ac.id/home/index\n\t\t\t\t\t"
+        - img [ref=e11]
+      - navigation "Site Navigation" [ref=e12]:
+        - generic [ref=e14]:
+          - list [ref=e15]:
+            - listitem [ref=e16]
+            - listitem [ref=e18]
+            - listitem [ref=e20]
+            - listitem [ref=e22]
+          - link "Search" [ref=e25] [cursor=pointer]:
+            - /url: https://dev-itkpress.itk.ac.id/home/search
+            - generic [ref=e26]: 
+            - text: Search
+        - list [ref=e28]:
+          - listitem [ref=e29]:
+            - link "heavenlydemon 0" [ref=e30] [cursor=pointer]:
+              - /url: "#"
+  - main [ref=e33]:
+    - generic [ref=e34]:
+      - navigation "You are here:" [ref=e35]:
+        - list [ref=e36]:
+          - listitem [ref=e37]:
+            - link "Home" [ref=e38] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/index
+            - text: /
+          - listitem [ref=e39]:
+            - link "Announcements" [ref=e40] [cursor=pointer]:
+              - /url: https://dev-itkpress.itk.ac.id/home/announcement
+            - text: /
+          - listitem [ref=e41]: CALL FOR SCRIPT BATCH#6
+      - article [ref=e42]:
+        - heading "CALL FOR SCRIPT BATCH#6" [level=1] [ref=e43]
+        - generic [ref=e44]:  2023-05-05
+        - paragraph [ref=e46]:
+          - text: Dalam rangka mensukseskan kewajiban Tri Dharma Perguruan Tinggi
+          - text: Saat ini ITK PRESS kembali hadir untuk memudahkan keseluruhan proses penerbitan dan percetakan buku yang Bapak/Ibu tulis, baik dalam bentuk buku ajar, monograf, buku referensi, dsb.
+          - text: "Kami tunggu naskah final Bapak/Ibu Pejuang pada batch 6 ini, paling lambat:"
+          - text: "Tanggal: 10 Juni 2022"
+          - text: "Email: itkpress@itk.ac.id"
+          - text: Ssshhhttt... Tunggu apa lagi?!
+          - text: Akan ada GERATIS BIAYA CETAK BUKU dengan syarat dan ketentuan berlaku.
+          - text: Jangan lupa follow Instagram ITK Press untuk mendapatkan info menarik lainnya di
+          - link "https://www.instagram.com/itkpress/" [ref=e47] [cursor=pointer]:
+            - /url: https://www.instagram.com/itkpress/
+  - contentinfo [ref=e48]:
+    - generic [ref=e49]:
+      - paragraph [ref=e51]:
+        - strong [ref=e52]: ITK Press Publishers (Institute for Research and Community Service) © 2021
+      - complementary [ref=e53]:
+        - link "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e54] [cursor=pointer]:
+          - /url: https://dev-itkpress.itk.ac.id/home/about/aboutThisPublishingSystem
+          - img "More information about the publishing system, Platform and Workflow by OMP/PKP." [ref=e55]

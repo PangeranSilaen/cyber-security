@@ -1,0 +1,34 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "ITK Press" [ref=e4] [cursor=pointer]:
+        - /url: https://dev-itkpress.itk.ac.id/home/index
+      - generic [ref=e5]:
+        - button "Tasks" [ref=e7] [cursor=pointer]:
+          - generic [ref=e8]: 
+          - generic [ref=e9]: Tasks
+        - button "heavenlydemon" [ref=e11] [cursor=pointer]:
+          - generic [ref=e12]: 
+          - generic [ref=e13]: heavenlydemon
+    - main [ref=e15]:
+      - generic [ref=e16]:
+        - heading "Submissions" [level=1] [ref=e17]
+        - generic [ref=e18]:
+          - tablist [ref=e19]:
+            - tab "My Queue" [selected] [ref=e20]
+            - tab "Archives" [ref=e21]
+          - tabpanel "My Queue" [ref=e22]:
+            - button "Help" [ref=e23]
+            - generic [ref=e26]
+          - text:   
+    - status
+  - dialog [ref=e46]:
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - heading "Error" [level=2] [ref=e50]
+        - button "Close" [active] [ref=e51] [cursor=pointer]:
+          - text: ×
+          - generic [ref=e52]: Close
+      - generic [ref=e53]:
+        - generic [ref=e54]: An unexpected error has occurred. Please reload the page and try again.
+        - button "OK" [ref=e56] [cursor=pointer]
