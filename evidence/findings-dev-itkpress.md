@@ -263,15 +263,15 @@ Pada environment dev, batasi registrasi (disable self-registration atau batasi v
 
 ---
 
-## DITK-007: Directory Listing Aktif pada `/cache/`
+## DITK-007: Directory Listing Luas pada Direktori Internal OMP
 
 **ID:** DITK-007
 
-**Judul:** Listing direktori aktif pada `/cache/`, mengekspos struktur file internal aplikasi
+**Judul:** Listing direktori aktif pada banyak direktori internal OMP, mengekspos struktur aplikasi, plugin, template cache, dan metadata versi
 
 **Status:** Terkonfirmasi (misconfiguration)
 
-**Severity Sementara:** Low
+**Severity Sementara:** Medium
 
 **Confidence:** High (listing terverifikasi live)
 
@@ -280,25 +280,30 @@ Pada environment dev, batasi registrasi (disable self-registration atau batasi v
 **Bukti Non-Destruktif:**
 
 - `GET /cache/` = HTTP 200 dengan penanda `Index of`, menampilkan 50+ entri: file CSS gabungan (`0-stylesheet.css`), cache locale (`fc-locale-*.php`), cache ONIX codelist (`fc-List*_codelistItems-en_US.php`), folder `HTML/` dan `URI/`.
-- File `.php` di `/cache/` dieksekusi server (tidak membocorkan source code), namun daftar isi direktori tetap terekspos.
+- Verifikasi lanjutan 2026-06-21/22 menunjukkan directory listing juga aktif pada banyak path internal lain:
+  - `/cache/HTML/`, `/cache/URI/`, `/cache/t_compile/`
+  - `/plugins/`, `/plugins/themes/`, `/plugins/importexport/`, `/plugins/paymethod/`, `/plugins/reports/`, `/plugins/pubIds/`, `/plugins/viewableFiles/`, `/plugins/metadata/`
+  - `/lib/`, `/lib/pkp/`, `/dbscripts/`, `/dbscripts/xml/`, `/docs/`, `/docs/release-notes/`, `/locale/`, `/registry/`, `/api/`
+- `/cache/t_compile/` mengekspos nama compiled template seperti `app.layoutsbackend.tpl.php`, `app.adminindex.tpl.php`, `app.controllerstabauthorDashb.php`, `app.useruserGroups.tpl.php`, dan `app.userrolesForm.tpl.php`.
+- `/plugins/` mengekspos inventory plugin kategori seperti `gateways/`, `importexport/`, `metadata/`, `oaiMetadataFormats/`, `paymethod/`, `pubIds/`, `reports/`, `themes/`, dan `viewableFiles/`.
 - Penguat: `GET /dbscripts/xml/version.xml` = HTTP 200 (`<release>3.3.0.12</release>`); `GET /docs/release-notes/README-3.3.0` = HTTP 200.
-- Waktu: 2026-06-14.
+- Waktu: 2026-06-14, diperluas 2026-06-21/22.
 
 **Analisis:**
 
-Autoindex aktif pada direktori internal aplikasi (`/cache/`) dan beberapa file dokumentasi/skema versi dapat diakses langsung. Ini information disclosure yang mempermudah fingerprinting (mengonfirmasi versi 3.3.0.12 lewat jalur lain) dan memetakan struktur instalasi. Sejalan dengan pola F-011 pada target lama.
+Autoindex aktif pada banyak direktori internal aplikasi, bukan hanya `/cache/`. Ini information disclosure yang mempermudah fingerprinting, mengonfirmasi versi 3.3.0.12 lewat jalur lain, memetakan plugin/theme/import-export/payment module, serta mengungkap nama template backend/admin/author-dashboard dari cache kompilasi. Dalam konteks DITK-001 (OMP 3.3.0.12 usang dengan CVE publik), exposure struktur ini meningkatkan risiko serangan terarah walaupun bukan RCE mandiri.
 
 **Dampak Potensial:**
 
-Mempermudah enumerasi dan konfirmasi versi/komponen; memperkuat DITK-001 dan DITK-004.
+Mempermudah enumerasi dan konfirmasi versi/komponen, mengungkap struktur internal dan plugin inventory, serta memperkuat DITK-001 dan DITK-004. Informasi ini dapat membantu attacker memilih exploit yang sesuai untuk versi/komponen yang terpasang.
 
 **Batasan Validasi:**
 
-Hanya membaca halaman listing dan file metadata versi. Tidak ada file yang diunduh untuk dieksekusi atau dimodifikasi.
+Hanya membaca halaman listing, mengambil daftar nama entri, dan file metadata versi/dokumentasi publik. Tidak ada file yang dimodifikasi, tidak ada source sensitif yang dieksfiltrasi, dan tidak ada upaya exploit.
 
 **Rekomendasi Mitigasi:**
 
-Nonaktifkan directory listing (`Options -Indexes` / `autoindex off`), batasi akses langsung ke `/cache/`, `/dbscripts/`, dan `/docs/` dari publik.
+Nonaktifkan directory listing secara global (`Options -Indexes` / `autoindex off`). Batasi akses langsung dari publik ke direktori internal seperti `/cache/`, `/cache/t_compile/`, `/plugins/`, `/lib/`, `/dbscripts/`, `/docs/`, `/locale/`, `/registry/`, dan `/api/`. Sajikan hanya aset statis yang memang diperlukan melalui allowlist path yang eksplisit.
 
 ---
 
@@ -395,7 +400,7 @@ Open Monograph Press menempatkan seluruh alur unggah berkas (manuskrip, galley, 
 | DITK-004 | Version disclosure (OMP 3.3.0.12) | Low (Info) | A05 / A06 | CWE-200 |
 | DITK-005 | Shared host (OSINT) | Info | Reconnaissance | CWE-200 |
 | DITK-006 | Registrasi akun terbuka (pengganda risiko) | Low | A05 (+ konteks A06) | - |
-| DITK-007 | Directory listing `/cache/` | Low | A05 | CWE-548 |
+| DITK-007 | Broad directory listing internal OMP | Medium | A05 | CWE-548 / CWE-200 |
 | DITK-008 | Injection (search) - diuji, tidak terdeteksi | Info (negatif) | A03 (diuji) | CWE-89 (tidak terbukti) |
 | DITK-009 | File upload - gated di balik login | Info (negatif) | A04/A05 (diuji) | CWE-434 (tidak terjangkau) |
 

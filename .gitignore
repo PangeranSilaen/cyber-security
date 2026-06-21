@@ -5,3 +5,4 @@ kuliah/
 *.tmp
 lab/omp-local/.env
 .playwright-mcp/
+.test/
